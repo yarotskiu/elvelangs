@@ -85,6 +85,7 @@
   .desc{margin:3px 0 0 31px;color:var(--muted);font-size:13.5px}
   .meta{margin:9px 0 0 31px;font-size:12px;color:var(--dim);display:flex;gap:6px;flex-wrap:wrap}
   .meta b{color:var(--muted);font-weight:500}
+  .dist{margin-left:auto;color:var(--flame);font-weight:600;font-variant-numeric:tabular-nums}
 
   .side-foot{padding:16px 18px 28px;color:var(--dim);font-size:11.5px;line-height:1.5}
   .side-foot a{color:var(--river)}
@@ -246,7 +247,7 @@
 
   var T = {
     no:{ h1a:"Elvelangs", h1b:"i fakkellys", date:"Tor 24. sep 2026",
-      uM:"m", uKm:"km", bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
+      uM:"m", uKm:"km", bGeoCenter:"Sentrer", bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
       geoNear:"Nærmeste scene", geoDenied:"Posisjon ikke tilgjengelig \u2014 gi nettleseren tilgang til stedsdata.", geoNoSupport:"Nettleseren din støtter ikke posisjon.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"Hovedscenene", listNote:"Nordfra og sørover",
@@ -255,7 +256,7 @@
       disc:"Programmet er hentet fra arrangørens sider. Holdeplassene er nærmeste stoppested i luftlinje, ikke offisiell reiseinfo. Arrangøren anbefaler kollektivt, og å begynne på en hovedscene og gå nedover langs elva.",
       src:'Kilde: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Kart og elveløp: OpenStreetMap.' },
     en:{ h1a:"Elvelangs", h1b:"by torchlight", date:"Thu 24 Sep 2026",
-      uM:"m", uKm:"km", bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
+      uM:"m", uKm:"km", bGeoCenter:"Re-centre", bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
       geoNear:"Nearest stage", geoDenied:"Location unavailable \u2014 allow location access in your browser.", geoNoSupport:"Your browser does not support location.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"The main stages", listNote:"North to south",
@@ -264,7 +265,7 @@
       disc:"The programme comes from the organiser's pages. Transit stops are the nearest ones as the crow flies, not official travel info. The organiser recommends public transport, and starting at one main stage then walking downstream.",
       src:'Source: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Map and river: OpenStreetMap.' },
     ru:{ h1a:"Elvelangs", h1b:"при свете факелов", date:"Чт 24 сент. 2026",
-      uM:"м", uKm:"км", bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
+      uM:"м", uKm:"км", bGeoCenter:"Центрировать", bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
       geoNear:"Ближайшая сцена", geoDenied:"Местоположение недоступно \u2014 разреши доступ к геоданным в браузере.", geoNoSupport:"Браузер не поддерживает геолокацию.",
       tag:"Акерсэльва, Фрюшья–Ватерланн, 8 км",
       listTitle:"Главные сцены", listNote:"С севера на юг",
@@ -326,7 +327,7 @@
       + '<span class="stop-top"><span class="num">'+(i+1)+'</span>'
       + '<h3 data-f="p"></h3><span class="time">'+s.time+'</span></span>'
       + '<p class="act" data-f="a"></p><p class="desc" data-f="d"></p>'
-      + '<p class="meta"><b data-k="kStop"></b><span data-f="s"></span></p></button>';
+      + '<p class="meta"><b data-k="kStop"></b><span data-f="s"></span><span class="dist" data-dist></span></p></button>';
   }).join("");
 
   listEl.addEventListener("click", function(ev){
@@ -402,7 +403,12 @@
   // ---- geolocation ----
   var geoEl = document.getElementById("geo"),
       geoBtn = document.getElementById("b-geo"),
-      watchId = null, meMarker = null, meCircle = null, firstFix = true, geoMsg = null;
+      watchId = null, meMarker = null, meCircle = null,
+      firstFix = true, following = false, geoMsg = null,
+      geoNearIdx = null, geoNearDist = null, lastLL = null;
+
+  function geoWanted(){ try{ return localStorage.getItem("elv-geo") === "1"; }catch(e){ return false; } }
+  function setGeoWanted(v){ try{ v ? localStorage.setItem("elv-geo","1") : localStorage.removeItem("elv-geo"); }catch(e){} }
 
   function hav(a, b){
     var R = 6371000, t = Math.PI/180;
@@ -413,14 +419,10 @@
   }
   function fmt(m){ var t = T[lang]; return m < 950 ? Math.round(m/10)*10 + " " + t.uM : (m/1000).toFixed(1) + " " + t.uKm; }
 
-  function setGeoText(html){
-    if(html){ geoEl.innerHTML = html; geoEl.hidden = false; }
-    else { geoEl.innerHTML = ""; geoEl.hidden = true; }
-  }
-
   function onFix(pos){
     geoMsg = null;
     var ll = [pos.coords.latitude, pos.coords.longitude];
+    lastLL = ll;
     var acc = Math.max(pos.coords.accuracy || 0, 10);
     if(!meMarker){
       meMarker = L.marker(ll, {icon:L.divIcon({className:"", html:'<div class="me"></div>', iconSize:[16,16], iconAnchor:[8,8]}), zIndexOffset:1000}).addTo(map);
@@ -431,39 +433,72 @@
     var best = 0, bd = Infinity;
     STOPS.forEach(function(s, i){ var d = hav(ll, s.ll); if(d < bd){ bd = d; best = i; } });
     geoNearIdx = best; geoNearDist = bd;
+    if(firstFix){ firstFix = false; following = true; map.flyTo(ll, Math.max(map.getZoom(), 15), {duration:.8}); }
+    else if(following){ map.panTo(ll, {animate:true, duration:.5}); }
     renderGeo();
-    if(firstFix){ firstFix = false; map.flyTo(ll, Math.max(map.getZoom(), 14), {duration:.8}); }
   }
 
-  function onGeoErr(){ geoMsg = "geoDenied"; stopGeo(true); renderGeo(); }
+  function onGeoErr(){ geoMsg = "geoDenied"; stopGeo(true); setGeoWanted(false); renderGeo(); }
 
-  var geoNearIdx = null, geoNearDist = null;
-
-  function renderGeo(){
-    var t = T[lang];
-    if(geoMsg){ setGeoText(esc(t[geoMsg])); }
-    else if(geoNearIdx !== null){
-      setGeoText(esc(t.geoNear) + ": <b>" + esc(STOPS[geoNearIdx][lang].p) + "</b> \u00b7 " + fmt(geoNearDist));
-    } else if(watchId !== null){ setGeoText(esc(t.bGeoWait)); }
-    else { setGeoText(""); }
-    geoBtn.textContent = watchId !== null ? t.bGeoOff : t.bGeo;
-    geoBtn.setAttribute("aria-pressed", String(watchId !== null));
+  function startGeo(){
+    if(!navigator.geolocation){ geoMsg = "geoNoSupport"; renderGeo(); return; }
+    if(watchId !== null) return;
+    geoMsg = null; firstFix = true;
+    watchId = navigator.geolocation.watchPosition(onFix, onGeoErr, {enableHighAccuracy:true, maximumAge:10000, timeout:25000});
+    setGeoWanted(true);
+    renderGeo();
   }
 
   function stopGeo(keepMsg){
     if(watchId !== null){ navigator.geolocation.clearWatch(watchId); watchId = null; }
     if(meMarker){ map.removeLayer(meMarker); map.removeLayer(meCircle); meMarker = null; meCircle = null; }
-    geoNearIdx = null; geoNearDist = null; firstFix = true;
+    geoNearIdx = null; geoNearDist = null; lastLL = null; firstFix = true; following = false;
     if(!keepMsg) geoMsg = null;
   }
 
+  function renderGeo(){
+    var t = T[lang];
+    if(geoMsg){ geoEl.textContent = t[geoMsg]; geoEl.hidden = false; }
+    else if(geoNearIdx !== null){
+      geoEl.innerHTML = esc(t.geoNear) + ": <b>" + esc(STOPS[geoNearIdx][lang].p) + "</b> \u00b7 " + esc(fmt(geoNearDist));
+      geoEl.hidden = false;
+    } else if(watchId !== null){ geoEl.textContent = t.bGeoWait; geoEl.hidden = false; }
+    else { geoEl.textContent = ""; geoEl.hidden = true; }
+
+    STOPS.forEach(function(s, i){
+      var el = document.querySelector("#row-" + s.id + " [data-dist]");
+      if(el) el.textContent = lastLL ? fmt(hav(lastLL, s.ll)) : "";
+    });
+
+    geoBtn.textContent = watchId === null ? t.bGeo : (following ? t.bGeoOff : t.bGeoCenter);
+    geoBtn.setAttribute("aria-pressed", String(watchId !== null && following));
+  }
+
   geoBtn.addEventListener("click", function(){
-    if(watchId !== null){ stopGeo(); renderGeo(); return; }
-    if(!navigator.geolocation){ geoMsg = "geoNoSupport"; renderGeo(); return; }
-    geoMsg = null;
-    watchId = navigator.geolocation.watchPosition(onFix, onGeoErr, {enableHighAccuracy:true, maximumAge:15000, timeout:20000});
-    renderGeo();
+    if(watchId === null){ startGeo(); return; }
+    if(!following){ following = true; if(lastLL) map.flyTo(lastLL, Math.max(map.getZoom(), 15), {duration:.6}); renderGeo(); return; }
+    stopGeo(); setGeoWanted(false); renderGeo();
   });
+
+  map.on("dragstart", function(){ if(following){ following = false; renderGeo(); } });
+
+  document.addEventListener("visibilitychange", function(){
+    if(document.visibilityState === "visible" && watchId === null && geoWanted() && !geoMsg) startGeo();
+  });
+
+  // auto-start on open when the viewer has used it before or already granted permission
+  (function(){
+    function maybe(granted){ if(geoWanted() || granted) startGeo(); }
+    if(navigator.permissions && navigator.permissions.query){
+      try{
+        navigator.permissions.query({name:"geolocation"})
+          .then(function(st){ maybe(st.state === "granted"); })
+          .catch(function(){ maybe(false); });
+        return;
+      }catch(e){}
+    }
+    maybe(false);
+  })();
 
   render();
   window.addEventListener("resize", function(){ map.invalidateSize(); });
