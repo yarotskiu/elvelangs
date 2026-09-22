@@ -443,7 +443,7 @@
   function startGeo(){
     if(!navigator.geolocation){ geoMsg = "geoNoSupport"; renderGeo(); return; }
     if(watchId !== null) return;
-    geoMsg = null; firstFix = true;
+    geoMsg = null; firstFix = true; following = true;
     watchId = navigator.geolocation.watchPosition(onFix, onGeoErr, {enableHighAccuracy:true, maximumAge:10000, timeout:25000});
     setGeoWanted(true);
     renderGeo();
