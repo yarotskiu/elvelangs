@@ -53,6 +53,8 @@
 
   .geo{flex:1 1 100%;margin:2px 0 0;font-size:12.5px;color:var(--muted)}
   .geo b{color:var(--flame);font-weight:600}
+  .dl{color:var(--dim)}
+  .dl.ok{color:var(--river)}
   .me{
     width:16px;height:16px;border-radius:50%;background:#5BC8F5;border:2px solid #0E0D0B;
     box-shadow:0 0 0 2px rgba(91,200,245,.4),0 0 18px 5px rgba(91,200,245,.55);
@@ -145,7 +147,11 @@
       <div class="seg">
         <button type="button" id="b-geo" data-t="bGeo">Hvor er jeg</button>
       </div>
+      <div class="seg">
+        <button type="button" id="b-dl" data-t="bDl">Last ned kartet</button>
+      </div>
       <p class="geo" id="geo" hidden></p>
+      <p class="geo dl" id="dl" hidden></p>
     </div>
   </header>
 
@@ -247,7 +253,7 @@
 
   var T = {
     no:{ h1a:"Elvelangs", h1b:"i fakkellys", date:"Tor 24. sep 2026",
-      uM:"m", uKm:"km", bGeoCenter:"Sentrer", bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
+      uM:"m", uKm:"km", bDl:"Last ned kartet", bDlDone:"Kartet er lagret", dlBusy:"Lagrer kartet", dlReady:"Kartet er lagret \u2014 virker uten nett", dlFail:"Kartet ble ikke lagret helt \u2014 prøv igjen på wifi", dlNoSupport:"Nettleseren din støtter ikke offline-lagring.", bGeoCenter:"Sentrer", bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
       geoNear:"Nærmeste scene", geoDenied:"Posisjon ikke tilgjengelig \u2014 gi nettleseren tilgang til stedsdata.", geoNoSupport:"Nettleseren din støtter ikke posisjon.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"Hovedscenene", listNote:"Nordfra og sørover",
@@ -256,7 +262,7 @@
       disc:"Programmet er hentet fra arrangørens sider. Holdeplassene er nærmeste stoppested i luftlinje, ikke offisiell reiseinfo. Arrangøren anbefaler kollektivt, og å begynne på en hovedscene og gå nedover langs elva.",
       src:'Kilde: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Kart og elveløp: OpenStreetMap.' },
     en:{ h1a:"Elvelangs", h1b:"by torchlight", date:"Thu 24 Sep 2026",
-      uM:"m", uKm:"km", bGeoCenter:"Re-centre", bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
+      uM:"m", uKm:"km", bDl:"Save map offline", bDlDone:"Map saved", dlBusy:"Saving the map", dlReady:"Map saved \u2014 works without a network", dlFail:"The map was not saved in full \u2014 try again on wifi", dlNoSupport:"Your browser does not support offline storage.", bGeoCenter:"Re-centre", bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
       geoNear:"Nearest stage", geoDenied:"Location unavailable \u2014 allow location access in your browser.", geoNoSupport:"Your browser does not support location.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"The main stages", listNote:"North to south",
@@ -265,7 +271,7 @@
       disc:"The programme comes from the organiser's pages. Transit stops are the nearest ones as the crow flies, not official travel info. The organiser recommends public transport, and starting at one main stage then walking downstream.",
       src:'Source: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Map and river: OpenStreetMap.' },
     ru:{ h1a:"Elvelangs", h1b:"при свете факелов", date:"Чт 24 сент. 2026",
-      uM:"м", uKm:"км", bGeoCenter:"Центрировать", bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
+      uM:"м", uKm:"км", bDl:"Скачать карту", bDlDone:"Карта сохранена", dlBusy:"Сохраняю карту", dlReady:"Карта сохранена \u2014 работает без сети", dlFail:"Карта сохранилась не полностью \u2014 попробуй ещё раз по Wi-Fi", dlNoSupport:"Браузер не поддерживает офлайн-хранение.", bGeoCenter:"Центрировать", bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
       geoNear:"Ближайшая сцена", geoDenied:"Местоположение недоступно \u2014 разреши доступ к геоданным в браузере.", geoNoSupport:"Браузер не поддерживает геолокацию.",
       tag:"Акерсэльва, Фрюшья–Ватерланн, 8 км",
       listTitle:"Главные сцены", listNote:"С севера на юг",
@@ -293,7 +299,7 @@
       L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, maxNativeZoom:16})
     ]),
     light: L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom:19,
+      maxZoom:19, maxNativeZoom:16,
       attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     })
   };
@@ -379,6 +385,7 @@
     document.querySelectorAll("[data-base]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.base===base)); });
     document.documentElement.lang = lang==="no" ? "nb" : lang;
     if(typeof renderGeo === "function") renderGeo();
+    if(typeof renderDl === "function") renderDl();
     document.title = (lang==="ru" ? "Elvelangs 2026 — карта" : lang==="en" ? "Elvelangs 2026 — map" : "Elvelangs i fakkellys 2026 — kart");
   }
 
@@ -499,6 +506,97 @@
     }
     maybe(false);
   })();
+
+  // ---- offline map ----
+  var dlEl = document.getElementById("dl"), dlBtn = document.getElementById("b-dl"), dlBusy = false;
+  var DL_ZOOMS = [12, 13, 14, 15, 16];
+
+  function dlDone(){ try{ return localStorage.getItem("elv-offline") === "1"; }catch(e){ return false; } }
+
+  function tileXY(lat, lon, z){
+    var n = Math.pow(2, z), r = lat * Math.PI / 180;
+    return [ Math.floor((lon + 180) / 360 * n),
+             Math.floor((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n) ];
+  }
+
+  function tileUrls(){
+    var urls = [], seen = {};
+    DL_ZOOMS.forEach(function(z){
+      river.forEach(function(p){
+        var t = tileXY(p[0], p[1], z);
+        for(var dx = -1; dx <= 1; dx++){
+          for(var dy = -1; dy <= 1; dy++){
+            var x = t[0] + dx, y = t[1] + dy, k = z + "/" + x + "/" + y;
+            if(seen[k]) continue;
+            seen[k] = 1;
+            urls.push("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/" + z + "/" + y + "/" + x);
+            urls.push("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/" + z + "/" + y + "/" + x);
+            urls.push("https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png");
+          }
+        }
+      });
+    });
+    return urls;
+  }
+
+  function setDl(text, ok){
+    if(!text){ dlEl.hidden = true; dlEl.textContent = ""; return; }
+    dlEl.hidden = false; dlEl.textContent = text;
+    dlEl.classList.toggle("ok", !!ok);
+  }
+
+  function renderDl(){
+    var t = T[lang];
+    if(dlBusy) return;
+    dlBtn.textContent = dlDone() ? t.bDlDone : t.bDl;
+    dlBtn.setAttribute("aria-pressed", String(dlDone()));
+    if(dlDone()) setDl(t.dlReady, true); else setDl("");
+  }
+
+  function download(){
+    var t = T[lang];
+    if(!window.caches){ setDl(t.dlNoSupport); return; }
+    var urls = tileUrls(), total = urls.length, done = 0, failed = 0, i = 0;
+    dlBusy = true;
+    dlBtn.disabled = true;
+    if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function(){});
+
+    caches.open("elv-tiles-v1").then(function(cache){
+      function tick(){
+        var pct = Math.round(done / total * 100);
+        dlBtn.textContent = pct + "%";
+        setDl(T[lang].dlBusy + ": " + done + " / " + total);
+      }
+      function next(){
+        if(i >= total) return Promise.resolve();
+        var url = urls[i++];
+        return cache.match(url, {ignoreVary:true}).then(function(hit){
+          if(hit) return null;
+          return fetch(url, {mode:"cors"}).then(function(r){
+            if(r && r.status === 200) return cache.put(url, r);
+            failed++;
+          }).catch(function(){ failed++; });
+        }).then(function(){ done++; if(done % 10 === 0 || done === total) tick(); return next(); });
+      }
+      tick();
+      return Promise.all([next(), next(), next()]);
+    }).then(function(){
+      dlBusy = false;
+      dlBtn.disabled = false;
+      if(failed > total * 0.1){ try{ localStorage.removeItem("elv-offline"); }catch(e){} renderDl(); setDl(T[lang].dlFail); }
+      else { try{ localStorage.setItem("elv-offline","1"); }catch(e){} renderDl(); }
+    }).catch(function(){
+      dlBusy = false; dlBtn.disabled = false; renderDl(); setDl(T[lang].dlFail);
+    });
+  }
+
+  dlBtn.addEventListener("click", function(){ if(!dlBusy) download(); });
+
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){});
+    });
+  }
 
   render();
   window.addEventListener("resize", function(){ map.invalidateSize(); });
