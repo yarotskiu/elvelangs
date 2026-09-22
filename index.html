@@ -246,7 +246,7 @@
 
   var T = {
     no:{ h1a:"Elvelangs", h1b:"i fakkellys", date:"Tor 24. sep 2026",
-      bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
+      uM:"m", uKm:"km", bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
       geoNear:"Nærmeste scene", geoDenied:"Posisjon ikke tilgjengelig \u2014 gi nettleseren tilgang til stedsdata.", geoNoSupport:"Nettleseren din støtter ikke posisjon.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"Hovedscenene", listNote:"Nordfra og sørover",
@@ -255,7 +255,7 @@
       disc:"Programmet er hentet fra arrangørens sider. Holdeplassene er nærmeste stoppested i luftlinje, ikke offisiell reiseinfo. Arrangøren anbefaler kollektivt, og å begynne på en hovedscene og gå nedover langs elva.",
       src:'Kilde: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Kart og elveløp: OpenStreetMap.' },
     en:{ h1a:"Elvelangs", h1b:"by torchlight", date:"Thu 24 Sep 2026",
-      bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
+      uM:"m", uKm:"km", bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
       geoNear:"Nearest stage", geoDenied:"Location unavailable \u2014 allow location access in your browser.", geoNoSupport:"Your browser does not support location.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"The main stages", listNote:"North to south",
@@ -264,7 +264,7 @@
       disc:"The programme comes from the organiser's pages. Transit stops are the nearest ones as the crow flies, not official travel info. The organiser recommends public transport, and starting at one main stage then walking downstream.",
       src:'Source: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Map and river: OpenStreetMap.' },
     ru:{ h1a:"Elvelangs", h1b:"при свете факелов", date:"Чт 24 сент. 2026",
-      bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
+      uM:"м", uKm:"км", bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
       geoNear:"Ближайшая сцена", geoDenied:"Местоположение недоступно \u2014 разреши доступ к геоданным в браузере.", geoNoSupport:"Браузер не поддерживает геолокацию.",
       tag:"Акерсэльва, Фрюшья–Ватерланн, 8 км",
       listTitle:"Главные сцены", listNote:"С севера на юг",
@@ -411,7 +411,7 @@
             Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(dLon/2)*Math.sin(dLon/2);
     return 2*R*Math.asin(Math.sqrt(x));
   }
-  function fmt(m){ return m < 950 ? Math.round(m/10)*10 + " m" : (m/1000).toFixed(1) + " km"; }
+  function fmt(m){ var t = T[lang]; return m < 950 ? Math.round(m/10)*10 + " " + t.uM : (m/1000).toFixed(1) + " " + t.uKm; }
 
   function setGeoText(html){
     if(html){ geoEl.innerHTML = html; geoEl.hidden = false; }
