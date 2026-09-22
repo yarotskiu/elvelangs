@@ -51,6 +51,13 @@
   .seg button:hover:not([aria-pressed="true"]){color:var(--text)}
   .seg button:focus-visible{outline:2px solid var(--river);outline-offset:-2px}
 
+  .geo{flex:1 1 100%;margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+  .geo b{color:var(--flame);font-weight:600}
+  .me{
+    width:16px;height:16px;border-radius:50%;background:#5BC8F5;border:2px solid #0E0D0B;
+    box-shadow:0 0 0 2px rgba(91,200,245,.4),0 0 18px 5px rgba(91,200,245,.55);
+  }
+
   .main{flex:1 1 auto;display:grid;grid-template-columns:minmax(0,1fr) 370px;min-height:0}
   #map{height:100%;width:100%;background:#0B0A08}
   .side{border-left:1px solid var(--rule);overflow-y:auto;background:var(--ink);min-height:0}
@@ -134,6 +141,10 @@
         <button type="button" id="b-dark" data-base="dark" data-t="bDark">Mørkt</button>
         <button type="button" id="b-light" data-base="light" data-t="bLight">Lyst</button>
       </div>
+      <div class="seg">
+        <button type="button" id="b-geo" data-t="bGeo">Hvor er jeg</button>
+      </div>
+      <p class="geo" id="geo" hidden></p>
     </div>
   </header>
 
@@ -235,6 +246,8 @@
 
   var T = {
     no:{ h1a:"Elvelangs", h1b:"i fakkellys", date:"Tor 24. sep 2026",
+      bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
+      geoNear:"Nærmeste scene", geoDenied:"Posisjon ikke tilgjengelig \u2014 gi nettleseren tilgang til stedsdata.", geoNoSupport:"Nettleseren din støtter ikke posisjon.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"Hovedscenene", listNote:"Nordfra og sørover",
       bDark:"Mørkt", bLight:"Lyst", kStop:"Nærmeste holdeplass", kMap:"Veibeskrivelse",
@@ -242,6 +255,8 @@
       disc:"Programmet er hentet fra arrangørens sider. Holdeplassene er nærmeste stoppested i luftlinje, ikke offisiell reiseinfo. Arrangøren anbefaler kollektivt, og å begynne på en hovedscene og gå nedover langs elva.",
       src:'Kilde: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Kart og elveløp: OpenStreetMap.' },
     en:{ h1a:"Elvelangs", h1b:"by torchlight", date:"Thu 24 Sep 2026",
+      bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
+      geoNear:"Nearest stage", geoDenied:"Location unavailable \u2014 allow location access in your browser.", geoNoSupport:"Your browser does not support location.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
       listTitle:"The main stages", listNote:"North to south",
       bDark:"Dark", bLight:"Light", kStop:"Nearest stop", kMap:"Directions",
@@ -249,6 +264,8 @@
       disc:"The programme comes from the organiser's pages. Transit stops are the nearest ones as the crow flies, not official travel info. The organiser recommends public transport, and starting at one main stage then walking downstream.",
       src:'Source: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Map and river: OpenStreetMap.' },
     ru:{ h1a:"Elvelangs", h1b:"при свете факелов", date:"Чт 24 сент. 2026",
+      bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
+      geoNear:"Ближайшая сцена", geoDenied:"Местоположение недоступно \u2014 разреши доступ к геоданным в браузере.", geoNoSupport:"Браузер не поддерживает геолокацию.",
       tag:"Акерсэльва, Фрюшья–Ватерланн, 8 км",
       listTitle:"Главные сцены", listNote:"С севера на юг",
       bDark:"Тёмная", bLight:"Светлая", kStop:"Ближайшая остановка", kMap:"Маршрут",
@@ -360,6 +377,7 @@
     document.querySelectorAll("[data-lang]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.lang===lang)); });
     document.querySelectorAll("[data-base]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.base===base)); });
     document.documentElement.lang = lang==="no" ? "nb" : lang;
+    if(typeof renderGeo === "function") renderGeo();
     document.title = (lang==="ru" ? "Elvelangs 2026 — карта" : lang==="en" ? "Elvelangs 2026 — map" : "Elvelangs i fakkellys 2026 — kart");
   }
 
@@ -379,6 +397,72 @@
       try{ localStorage.setItem("elv-base", base); }catch(e){}
       render();
     });
+  });
+
+  // ---- geolocation ----
+  var geoEl = document.getElementById("geo"),
+      geoBtn = document.getElementById("b-geo"),
+      watchId = null, meMarker = null, meCircle = null, firstFix = true, geoMsg = null;
+
+  function hav(a, b){
+    var R = 6371000, t = Math.PI/180;
+    var dLat = (b[0]-a[0])*t, dLon = (b[1]-a[1])*t;
+    var x = Math.sin(dLat/2)*Math.sin(dLat/2) +
+            Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(dLon/2)*Math.sin(dLon/2);
+    return 2*R*Math.asin(Math.sqrt(x));
+  }
+  function fmt(m){ return m < 950 ? Math.round(m/10)*10 + " m" : (m/1000).toFixed(1) + " km"; }
+
+  function setGeoText(html){
+    if(html){ geoEl.innerHTML = html; geoEl.hidden = false; }
+    else { geoEl.innerHTML = ""; geoEl.hidden = true; }
+  }
+
+  function onFix(pos){
+    geoMsg = null;
+    var ll = [pos.coords.latitude, pos.coords.longitude];
+    var acc = Math.max(pos.coords.accuracy || 0, 10);
+    if(!meMarker){
+      meMarker = L.marker(ll, {icon:L.divIcon({className:"", html:'<div class="me"></div>', iconSize:[16,16], iconAnchor:[8,8]}), zIndexOffset:1000}).addTo(map);
+      meCircle = L.circle(ll, {radius:acc, color:"#5BC8F5", weight:1, opacity:.5, fillColor:"#5BC8F5", fillOpacity:.10}).addTo(map);
+    } else {
+      meMarker.setLatLng(ll); meCircle.setLatLng(ll).setRadius(acc);
+    }
+    var best = 0, bd = Infinity;
+    STOPS.forEach(function(s, i){ var d = hav(ll, s.ll); if(d < bd){ bd = d; best = i; } });
+    geoNearIdx = best; geoNearDist = bd;
+    renderGeo();
+    if(firstFix){ firstFix = false; map.flyTo(ll, Math.max(map.getZoom(), 14), {duration:.8}); }
+  }
+
+  function onGeoErr(){ geoMsg = "geoDenied"; stopGeo(true); renderGeo(); }
+
+  var geoNearIdx = null, geoNearDist = null;
+
+  function renderGeo(){
+    var t = T[lang];
+    if(geoMsg){ setGeoText(esc(t[geoMsg])); }
+    else if(geoNearIdx !== null){
+      setGeoText(esc(t.geoNear) + ": <b>" + esc(STOPS[geoNearIdx][lang].p) + "</b> \u00b7 " + fmt(geoNearDist));
+    } else if(watchId !== null){ setGeoText(esc(t.bGeoWait)); }
+    else { setGeoText(""); }
+    geoBtn.textContent = watchId !== null ? t.bGeoOff : t.bGeo;
+    geoBtn.setAttribute("aria-pressed", String(watchId !== null));
+  }
+
+  function stopGeo(keepMsg){
+    if(watchId !== null){ navigator.geolocation.clearWatch(watchId); watchId = null; }
+    if(meMarker){ map.removeLayer(meMarker); map.removeLayer(meCircle); meMarker = null; meCircle = null; }
+    geoNearIdx = null; geoNearDist = null; firstFix = true;
+    if(!keepMsg) geoMsg = null;
+  }
+
+  geoBtn.addEventListener("click", function(){
+    if(watchId !== null){ stopGeo(); renderGeo(); return; }
+    if(!navigator.geolocation){ geoMsg = "geoNoSupport"; renderGeo(); return; }
+    geoMsg = null;
+    watchId = navigator.geolocation.watchPosition(onFix, onGeoErr, {enableHighAccuracy:true, maximumAge:15000, timeout:20000});
+    renderGeo();
   });
 
   render();
