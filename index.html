@@ -268,11 +268,12 @@
   var map = L.map("map", { zoomControl:true, scrollWheelZoom:true, attributionControl:true })
     .setView([59.9405,10.7640], 12);
 
+  var esriAttr = 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
   var tiles = {
-    dark: L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      maxZoom:19, subdomains:"abcd",
-      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    }),
+    dark: L.layerGroup([
+      L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, maxNativeZoom:16, attribution:esriAttr}),
+      L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, maxNativeZoom:16})
+    ]),
     light: L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom:19,
       attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
