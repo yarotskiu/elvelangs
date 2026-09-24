@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Elvelangs i fakkellys 2026 — kart</title>
-<meta name="description" content="Kart over hovedscenene på Elvelangs i fakkellys, Akerselva, torsdag 24. september 2026.">
+<meta name="description" content="Kart over scenene og de faste innslagene på Elvelangs i fakkellys, Akerselva, torsdag 24. september 2026.">
 <meta property="og:title" content="Elvelangs i fakkellys 2026">
-<meta property="og:description" content="Hovedscenene langs Akerselva — hvor, når og nærmeste holdeplass. NO / EN / RU.">
+<meta property="og:description" content="Scener og faste innslag langs Akerselva — hvor, når og nærmeste holdeplass. NO / EN / RU.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -159,7 +159,7 @@
     <div id="map"></div>
     <aside class="side">
       <div class="side-head">
-        <h2 data-t="listTitle">Hovedscenene</h2>
+        <h2 data-t="listTitle">Scener og faste innslag</h2>
         <p data-t="listNote">Nordfra og sørover</p>
       </div>
       <div id="list"></div>
@@ -194,7 +194,7 @@
   }
 
   var STOPS = [
-    { id:"brekkedammen", ll:[59.96675,10.77677], time:"20:00",
+    { id:"brekkedammen", ll:[59.96653,10.77852], time:"20:00",
       no:{p:"Frysja — Brekkedammen", a:"Offisiell åpning + Malin Pettersen",
           d:"Varaordfører Julianne Ofstad åpner kvelden, så minikonsert med spellemannvinneren Malin Pettersen.", s:"Frysja · Kjelsås stasjon"},
       en:{p:"Frysja — Brekkedammen", a:"Official opening + Malin Pettersen",
@@ -202,7 +202,7 @@
       ru:{p:"Фрюшья — Бреккедаммен", a:"Открытие + Малин Петтерсен",
           d:"Вечер открывает вице-мэр Юлианне Офстад, затем мини-концерт Малин Петтерсен, лауреатки премии Spellemann.", s:"Frysja · Kjelsås"} },
 
-    { id:"gullhaug", ll:[59.95055,10.76583], time:"20:00–22:30",
+    { id:"gullhaug", ll:[59.94977,10.76575], time:"20:00–22:30",
       no:{p:"Nydalen — Gullhaug Torg", a:"Den Norske Ballettskole",
           d:"Break, ballett, moderne dans og musikal framført av barn og ungdom.", s:"Nydalen (T-bane)"},
       en:{p:"Nydalen — Gullhaug Torg", a:"Den Norske Ballettskole",
@@ -210,7 +210,7 @@
       ru:{p:"Нюдален — Gullhaug Torg", a:"Норвежская балетная школа",
           d:"Брейк, балет, современный танец и мюзикл в исполнении детей и подростков.", s:"Nydalen (метро)"} },
 
-    { id:"torgbygget", ll:[59.94936,10.76584], time:"20:00–22:00",
+    { id:"torgbygget", ll:[59.94902,10.76470], time:"20:00–22:00",
       no:{p:"Nydalen — Torgbygget lekeplass", a:"Teater Okolo",
           d:"Ild- og luftakrobatikk for åttende år på rad: sirkus, dans og ildmanipulasjon inspirert av vannets fenomener.", s:"Nydalen (T-bane)"},
       en:{p:"Nydalen — Torgbygget playground", a:"Teater Okolo",
@@ -218,7 +218,7 @@
       ru:{p:"Нюдален — площадка у Torgbygget", a:"Театр Okolo",
           d:"Огненная и воздушная акробатика, восьмой год подряд: цирк, танец и работа с огнём, вдохновлённые водой.", s:"Nydalen (метро)"} },
 
-    { id:"badebakken", ll:[59.94591,10.76198], time:"20:00–22:30",
+    { id:"badebakken", ll:[59.94584,10.76449], time:"20:00–22:30",
       no:{p:"Badebakken", a:"Oslo Kulturskole",
           d:"Hiphop- og jazzkoreografi fra elevene ved Voldsløkka.", s:"Badebakken (buss) · Nydalen"},
       en:{p:"Badebakken", a:"Oslo Kulturskole",
@@ -226,7 +226,39 @@
       ru:{p:"Бадебаккен", a:"Городская школа искусств Осло",
           d:"Хип-хоп и джаз-хореография в исполнении учеников филиала Voldsløkka.", s:"Badebakken (авт.) · Nydalen"} },
 
-    { id:"myralokka", ll:[59.93515,10.75695], time:"20:00–23:00",
+    { id:"kor-sagene-nord", ll:[59.94484,10.76484], time:"20:00–22:30",
+      no:{p:"Sagene — korpost nord", a:"Torshovkoret 20:00 · Møllergata kvinnekor 21:15",
+          d:"To kor avløser hverandre gjennom kvelden.", s:"Kristoffer Aamots bro (buss)"},
+      en:{p:"Sagene — northern choir spot", a:"Torshovkoret 20:00 · Møllergata women's choir 21:15",
+          d:"Two choirs taking turns through the evening.", s:"Kristoffer Aamots bro (bus)"},
+      ru:{p:"Сагене — северная хоровая точка", a:"Torshovkoret 20:00 · Møllergata kvinnekor 21:15",
+          d:"Два хора сменяют друг друга в течение вечера.", s:"Kristoffer Aamots bro (авт.)"} },
+
+    { id:"kor-sagene-swell", ll:[59.94350,10.76628], time:"20:00–22:30",
+      no:{p:"Sagene — korpost ved Idun", a:"Torshov kvinnelige vokalensemble 20:00 · Swell 21:15",
+          d:"To kor avløser hverandre. Rett ved lyskunsten på Idun bro.", s:"Sandaker (buss)"},
+      en:{p:"Sagene — choir spot by Idun", a:"Torshov women's vocal ensemble 20:00 · Swell 21:15",
+          d:"Two choirs taking turns, right by the light art on Idun bridge.", s:"Sandaker (bus)"},
+      ru:{p:"Сагене — хоровая точка у Idun", a:"Torshov kvinnelige vokalensemble 20:00 · Swell 21:15",
+          d:"Два хора по очереди, рядом со световыми работами на мосту Idun.", s:"Sandaker (авт.)"} },
+
+    { id:"dagsangerne", ll:[59.94058,10.76576], time:"20:00–21:15",
+      no:{p:"Sagene — Dagsangerne", a:"Dagsangerne",
+          d:"Kor. Første bolk i kvelden — kommer du seint, er de ferdige.", s:"Sandaker senter (buss)"},
+      en:{p:"Sagene — Dagsangerne", a:"Dagsangerne",
+          d:"Choir. First set of the evening — arrive late and they are done.", s:"Sandaker senter (bus)"},
+      ru:{p:"Сагене — Dagsangerne", a:"Dagsangerne",
+          d:"Хор. Первый блок вечера — придёшь позже, уже закончат.", s:"Sandaker senter (авт.)"} },
+
+    { id:"bentsebrua", ll:[59.93720,10.76223], time:"19:00",
+      no:{p:"Bentsebrua skole", a:"Lilleborg strykeorkester 19:00 · Ung Media Sagene 19:30",
+          d:"Starter en time før resten av Elvelangs og avslutter tidligere — unge musikanter.", s:"Arendalsgata (buss)"},
+      en:{p:"Bentsebrua school", a:"Lilleborg string orchestra 19:00 · Ung Media Sagene 19:30",
+          d:"Starts an hour before the rest of Elvelangs and finishes earlier — young musicians.", s:"Arendalsgata (bus)"},
+      ru:{p:"Школа Bentsebrua", a:"Lilleborg strykeorkester 19:00 · Ung Media Sagene 19:30",
+          d:"Начинают на час раньше остального Elvelangs и заканчивают раньше — юные музыканты.", s:"Arendalsgata (авт.)"} },
+
+    { id:"myralokka", ll:[59.93602,10.75737], time:"20:00–23:00",
       no:{p:"Myraløkka", a:"Stella Polaris",
           d:"Det 40 år gamle turnéteateret med sjonglering, sirkus, dans, ild og luftakrobatikk.", s:"Vøyenbrua · Arendalsgata"},
       en:{p:"Myraløkka", a:"Stella Polaris",
@@ -234,7 +266,39 @@
       ru:{p:"Мюралёкка", a:"Stella Polaris",
           d:"Гастрольный театр с 40-летней историей: жонглирование, цирк, танец, огонь, воздушная акробатика.", s:"Vøyenbrua · Arendalsgata"} },
 
-    { id:"syng", ll:[59.91985,10.75558], time:"20:00–22:00",
+    { id:"torshovkorps", ll:[59.93245,10.75807], time:"20:00–23:00",
+      no:{p:"Sagene — korpspost", a:"Torshovkorpset 20:00 · Torshov Janitsjarorkester 21:00",
+          d:"Korps hele kvelden, rett ved elva.", s:"Vøyenbrua (buss)"},
+      en:{p:"Sagene — band spot", a:"Torshovkorpset 20:00 · Torshov Wind Orchestra 21:00",
+          d:"Brass and wind bands all evening, right by the river.", s:"Vøyenbrua (bus)"},
+      ru:{p:"Сагене — точка оркестров", a:"Torshovkorpset 20:00 · Torshov Janitsjarorkester 21:00",
+          d:"Духовые оркестры весь вечер, у самой реки.", s:"Vøyenbrua (авт.)"} },
+
+    { id:"odinsravner", ll:[59.92821,10.75555], time:"20:00",
+      no:{p:"Grünerløkka — Odins Ravner", a:"Odins Ravner",
+          d:"Acapella-kor.", s:"Sannergata (buss)"},
+      en:{p:"Grünerløkka — Odins Ravner", a:"Odins Ravner",
+          d:"A cappella choir.", s:"Sannergata (bus)"},
+      ru:{p:"Грюнерлёкка — Odins Ravner", a:"Odins Ravner",
+          d:"Хор a cappella.", s:"Sannergata (авт.)"} },
+
+    { id:"morsommere", ll:[59.92417,10.75371], time:"20:00–22:00",
+      no:{p:"Grünerløkka — korpost ved AHO", a:"Morsommere enn pent 20:00 · Oslo Hardkor 21:30",
+          d:"Blandakor acapella, midt i lysinstallasjonene til AHO-studentene.", s:"Telthusbakken (buss)"},
+      en:{p:"Grünerløkka — choir spot by AHO", a:"Morsommere enn pent 20:00 · Oslo Hardkor 21:30",
+          d:"A cappella mixed choirs, in among the AHO students' light installations.", s:"Telthusbakken (bus)"},
+      ru:{p:"Грюнерлёкка — хоровая точка у AHO", a:"Morsommere enn pent 20:00 · Oslo Hardkor 21:30",
+          d:"Смешанные хоры a cappella, среди световых инсталляций студентов AHO.", s:"Telthusbakken (авт.)"} },
+
+    { id:"kor-lokka", ll:[59.92164,10.75387], time:"20:00–23:00",
+      no:{p:"Grünerløkka — korpost", a:"Oslo Damekor 20:00 · Kor Vivo 20:40 · Kvinnekoret Larm 21:20 · Trill 22:00 · Kling Kokos 22:40",
+          d:"Fem kor på rad gjennom hele kvelden, med korte pauser mellom.", s:"Møllerveien (buss)"},
+      en:{p:"Grünerløkka — choir spot", a:"Oslo Damekor 20:00 · Kor Vivo 20:40 · Kvinnekoret Larm 21:20 · Trill 22:00 · Kling Kokos 22:40",
+          d:"Five choirs back to back through the evening, with short breaks between.", s:"Møllerveien (bus)"},
+      ru:{p:"Грюнерлёкка — хоровая точка", a:"Oslo Damekor 20:00 · Kor Vivo 20:40 · Kvinnekoret Larm 21:20 · Trill 22:00 · Kling Kokos 22:40",
+          d:"Пять хоров подряд весь вечер, с короткими паузами между ними.", s:"Møllerveien (авт.)"} },
+
+    { id:"syng", ll:[59.91958,10.75477], time:"20:00–22:00",
       no:{p:"Syng Grünerløkka", a:"Dissimilis 20:00 · Punktum Utropstegn! 21:00",
           d:"To livekonserter på rad gjennom kvelden. Øvre gate 7.", s:"Schous plass · Nybrua"},
       en:{p:"Syng Grünerløkka", a:"Dissimilis 20:00 · Punktum Utropstegn! 21:00",
@@ -242,13 +306,77 @@
       ru:{p:"Syng Grünerløkka", a:"Dissimilis 20:00 · Punktum Utropstegn! 21:00",
           d:"Два живых концерта подряд в течение вечера. Øvre gate 7.", s:"Schous plass · Nybrua"} },
 
-    { id:"olafiagangen", ll:[59.91292,10.75893], time:"20:00–23:00",
+    { id:"ankerbrua", ll:[59.91837,10.75676], time:"20:00–22:15",
+      no:{p:"Under Ankerbrua", a:"KorAL 20:00 · Kor Kanel 20:50 · Nordlæningernes forenings kor 21:20 · Korkollektivet 21:45",
+          d:"Fire kor under brua — god akustikk, og tak over hodet om det regner.", s:"Jakob kirke · Nybrua"},
+      en:{p:"Under Ankerbrua", a:"KorAL 20:00 · Kor Kanel 20:50 · Nordlæningernes forenings kor 21:20 · Korkollektivet 21:45",
+          d:"Four choirs under the bridge — good acoustics, and a roof if it rains.", s:"Jakob kirke · Nybrua"},
+      ru:{p:"Под мостом Ankerbrua", a:"KorAL 20:00 · Kor Kanel 20:50 · Nordlæningernes forenings kor 21:20 · Korkollektivet 21:45",
+          d:"Четыре хора под мостом — хорошая акустика и крыша на случай дождя.", s:"Jakob kirke · Nybrua"} },
+
+    { id:"ankertorget", ll:[59.91821,10.75866], time:"20:00–22:30",
+      no:{p:"Ankertorget", a:"Tonus Kvinnekor m/Larm 20:00 · Popkoret Røst 21:00 · Bivox 22:00",
+          d:"Tre kor på rad. I det røde huset ved torget viser Stiftelsen Anker lysutstillingen «Lys i vinduet».", s:"Nybrua (buss)"},
+      en:{p:"Ankertorget", a:"Tonus women's choir with Larm 20:00 · Popkoret Røst 21:00 · Bivox 22:00",
+          d:"Three choirs in a row. In the red house by the square, Stiftelsen Anker shows the light exhibition \"Lys i vinduet\".", s:"Nybrua (bus)"},
+      ru:{p:"Анкерторгет", a:"Tonus Kvinnekor и Larm 20:00 · Popkoret Røst 21:00 · Bivox 22:00",
+          d:"Три хора подряд. В красном доме у площади — световая выставка «Lys i vinduet» от Stiftelsen Anker.", s:"Nybrua (авт.)"} },
+
+    { id:"kor-gamleoslo", ll:[59.91759,10.76139], time:"20:00–22:10",
+      no:{p:"Gamle Oslo — korpost", a:"Tigerstaden Popkor 20:00 · Oslo Internasjonale Kvinnekor 20:30 · Gamle Oslo kro- og kirkekor 21:10 · Tøyen Trimkor 21:40",
+          d:"Fire kor avløser hverandre. Rett ved lysdekorasjonen med paraplyer.", s:"Heimdalsgata (trikk)"},
+      en:{p:"Gamle Oslo — choir spot", a:"Tigerstaden Popkor 20:00 · Oslo International Women's Choir 20:30 · Gamle Oslo kro- og kirkekor 21:10 · Tøyen Trimkor 21:40",
+          d:"Four choirs taking turns, right by the umbrella light decoration.", s:"Heimdalsgata (tram)"},
+      ru:{p:"Гамле Осло — хоровая точка", a:"Tigerstaden Popkor 20:00 · Oslo Internasjonale Kvinnekor 20:30 · Gamle Oslo kro- og kirkekor 21:10 · Tøyen Trimkor 21:40",
+          d:"Четыре хора по очереди, рядом со световой композицией из зонтов.", s:"Heimdalsgata (трамвай)"} },
+
+    { id:"tekstlab", ll:[59.91613,10.76135], time:"21:00–22:00",
+      no:{p:"Gamle Oslo — TekstLab", a:"TekstLab: «Collective Rites: Common Grounds»",
+          d:"Del et musikkminne og utforsk fellesskap gjennom lyd, klang og dans. Deltakende.", s:"Hausmanns bru (buss)"},
+      en:{p:"Gamle Oslo — TekstLab", a:"TekstLab: \"Collective Rites: Common Grounds\"",
+          d:"Share a music memory and explore common ground through sound and dance. Participatory.", s:"Hausmanns bru (bus)"},
+      ru:{p:"Гамле Осло — TekstLab", a:"TekstLab: «Collective Rites: Common Grounds»",
+          d:"Поделись музыкальным воспоминанием; общее через звук и танец. С участием публики.", s:"Hausmanns bru (авт.)"} },
+
+    { id:"flutystrings", ll:[59.91580,10.76089], time:"20:00–21:00",
+      no:{p:"Gamle Oslo — FlutyStrings", a:"FlutyStrings",
+          d:"Duo på fløyte og gitar: klassisk og irskinspirert musikk.", s:"Hausmanns bru (buss)"},
+      en:{p:"Gamle Oslo — FlutyStrings", a:"FlutyStrings",
+          d:"Flute and guitar duo: classical and Irish-inspired music.", s:"Hausmanns bru (bus)"},
+      ru:{p:"Гамле Осло — FlutyStrings", a:"FlutyStrings",
+          d:"Дуэт флейты и гитары: классика и ирландские мотивы.", s:"Hausmanns bru (авт.)"} },
+
+    { id:"bitterfoyn", ll:[59.91527,10.76022], time:"20:00–23:00",
+      no:{p:"Under Hausmanns bru", a:"Bitterfoyn",
+          d:"Kunstnerduo som forvandler passasjen under brua med projisert videokunst og lyd. Går hele kvelden.", s:"Hausmanns bru (buss)"},
+      en:{p:"Under Hausmanns bridge", a:"Bitterfoyn",
+          d:"Artist duo transforming the passage under the bridge with projected video art and sound. Runs all evening.", s:"Hausmanns bru (bus)"},
+      ru:{p:"Под мостом Hausmanns bru", a:"Bitterfoyn",
+          d:"Дуэт художников превращает проход под мостом в видеоарт со звуком. Идёт весь вечер.", s:"Hausmanns bru (авт.)"} },
+
+    { id:"kor-hausmann", ll:[59.91450,10.75944], time:"20:10–23:00",
+      no:{p:"Gamle Oslo — korpost ved Hausmanns bru", a:"Songlaget BUL 20:10 · Tøyenkoret 21:10 · Koret Diandre 22:00",
+          d:"Songlaget BUL er et av byens eldste kor, stiftet i 1914. Diandre avslutter posten med a cappella-pop og jazz.", s:"Hausmanns bru (buss)"},
+      en:{p:"Gamle Oslo — choir spot by Hausmanns bridge", a:"Songlaget BUL 20:10 · Tøyenkoret 21:10 · Koret Diandre 22:00",
+          d:"Songlaget BUL is one of the city's oldest choirs, founded 1914. Diandre closes with a cappella pop and jazz.", s:"Hausmanns bru (bus)"},
+      ru:{p:"Гамле Осло — хоровая точка у Hausmanns bru", a:"Songlaget BUL 20:10 · Tøyenkoret 21:10 · Koret Diandre 22:00",
+          d:"Songlaget BUL — один из старейших хоров города, основан в 1914. Diandre закрывает точку a cappella-попом и джазом.", s:"Hausmanns bru (авт.)"} },
+
+    { id:"danseparken", ll:[59.91380,10.75884], time:"20:10–23:00",
+      no:{p:"Danseparken", a:"Tango Traveler 20:10 · Lørenskog Kulturskole 21:00 · Høyskolen Kristiania 22:00",
+          d:"Argentinsk tango, så ungdomsdans, så dansere fra Høyskolen Kristiania. Rett før avslutningsscenen.", s:"Hausmanns bru (buss) · Grønland"},
+      en:{p:"Danseparken", a:"Tango Traveler 20:10 · Lørenskog Kulturskole 21:00 · Kristiania University College 22:00",
+          d:"Argentine tango, then youth dance, then dancers from Kristiania. Just before the closing stage.", s:"Hausmanns bru (bus) · Grønland"},
+      ru:{p:"Danseparken", a:"Tango Traveler 20:10 · Lørenskog Kulturskole 21:00 · Høyskolen Kristiania 22:00",
+          d:"Аргентинское танго, затем молодёжный танец, затем танцоры Kristiania. Прямо перед финальной сценой.", s:"Hausmanns bru (авт.) · Grønland"} },
+
+    { id:"olafiagangen", ll:[59.91297,10.75881], time:"20:00–23:00",
       no:{p:"Olafiagangen", a:"Verdens Folk",
-          d:"Dans, musikk og kulturuttrykk fra flere kontinenter. Området er overbygd, så det går fint i regnvær.", s:"Grønland (T-bane) · Oslo S"},
+          d:"Dans, musikk og kulturuttrykk fra flere kontinenter: 20:00 Bare hyggelig, 20:45 japanske trommer, 21:15 Irina Yasmin, 21:26 Kharua (Bolivia), 21:30 prisutdeling, 21:35 steelpan. Overbygd, så det går fint i regnvær.", s:"Grønland (T-bane) · Oslo S"},
       en:{p:"Olafiagangen", a:"Verdens Folk",
-          d:"Dance, music and culture from several continents. The area is covered, so rain is no problem.", s:"Grønland (metro) · Oslo S"},
+          d:"Dance, music and culture from several continents: 20:00 Bare hyggelig, 20:45 Japanese drums, 21:15 Irina Yasmin, 21:26 Kharua (Bolivia), 21:30 prize ceremony, 21:35 steelpan. Covered, so rain is no problem.", s:"Grønland (metro) · Oslo S"},
       ru:{p:"Олафиаганген", a:"Verdens Folk",
-          d:"Танцы, музыка и культура разных континентов. Площадка под крышей — дождь не помеха.", s:"Grønland (метро) · Oslo S"} }
+          d:"Танцы, музыка и культура разных континентов: 20:00 Bare hyggelig, 20:45 японские барабаны, 21:15 Irina Yasmin, 21:26 Kharua (Боливия), 21:30 награждение, 21:35 стилпэн. Площадка под крышей — дождь не помеха.", s:"Grønland (метро) · Oslo S"} }
   ];
 
   var T = {
@@ -256,29 +384,29 @@
       uM:"m", uKm:"km", bDl:"Last ned kartet", bDlDone:"Kartet er lagret", dlBusy:"Lagrer kartet", dlReady:"Kartet er lagret \u2014 virker uten nett", dlFail:"Kartet ble ikke lagret helt \u2014 prøv igjen på wifi", dlNoSupport:"Nettleseren din støtter ikke offline-lagring.", bGeoCenter:"Sentrer", bGeo:"Hvor er jeg", bGeoOff:"Skjul posisjon", bGeoWait:"Finner deg…",
       geoNear:"Nærmeste scene", geoDenied:"Posisjon ikke tilgjengelig \u2014 gi nettleseren tilgang til stedsdata.", geoNoSupport:"Nettleseren din støtter ikke posisjon.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
-      listTitle:"Hovedscenene", listNote:"Nordfra og sørover",
+      listTitle:"Scener og faste innslag", listNote:"Nordfra og sørover",
       bDark:"Mørkt", bLight:"Lyst", kStop:"Nærmeste holdeplass", kMap:"Veibeskrivelse",
       startLbl:"Start: Frysja", endLbl:"Slutt: Vaterland",
       disc:"Programmet er hentet fra arrangørens sider. Holdeplassene er nærmeste stoppested i luftlinje, ikke offisiell reiseinfo. Arrangøren anbefaler kollektivt, og å begynne på en hovedscene og gå nedover langs elva.",
-      src:'Kilde: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Kart og elveløp: OpenStreetMap.' },
+      src:'Kilde: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a> \u2014 se ogs\u00e5 <a href="https://www.google.com/maps/d/viewer?mid=1n26mjC3o-D-yEVIv_39091km596kPI8" target="_blank" rel="noopener">arrang\u00f8rens kart med alle 146 innslag</a>. Kart og elvel\u00f8p: OpenStreetMap.' },
     en:{ h1a:"Elvelangs", h1b:"by torchlight", date:"Thu 24 Sep 2026",
       uM:"m", uKm:"km", bDl:"Save map offline", bDlDone:"Map saved", dlBusy:"Saving the map", dlReady:"Map saved \u2014 works without a network", dlFail:"The map was not saved in full \u2014 try again on wifi", dlNoSupport:"Your browser does not support offline storage.", bGeoCenter:"Re-centre", bGeo:"Where am I", bGeoOff:"Hide my position", bGeoWait:"Locating…",
       geoNear:"Nearest stage", geoDenied:"Location unavailable \u2014 allow location access in your browser.", geoNoSupport:"Your browser does not support location.",
       tag:"Akerselva, Frysja–Vaterland, 8 km",
-      listTitle:"The main stages", listNote:"North to south",
+      listTitle:"Stages and scheduled acts", listNote:"North to south",
       bDark:"Dark", bLight:"Light", kStop:"Nearest stop", kMap:"Directions",
       startLbl:"Start: Frysja", endLbl:"End: Vaterland",
       disc:"The programme comes from the organiser's pages. Transit stops are the nearest ones as the crow flies, not official travel info. The organiser recommends public transport, and starting at one main stage then walking downstream.",
-      src:'Source: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Map and river: OpenStreetMap.' },
+      src:'Source: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a> \u2014 see also the <a href="https://www.google.com/maps/d/viewer?mid=1n26mjC3o-D-yEVIv_39091km596kPI8" target="_blank" rel="noopener">organiser\u2019s map with all 146 acts</a>. Map and river: OpenStreetMap.' },
     ru:{ h1a:"Elvelangs", h1b:"при свете факелов", date:"Чт 24 сент. 2026",
       uM:"м", uKm:"км", bDl:"Скачать карту", bDlDone:"Карта сохранена", dlBusy:"Сохраняю карту", dlReady:"Карта сохранена \u2014 работает без сети", dlFail:"Карта сохранилась не полностью \u2014 попробуй ещё раз по Wi-Fi", dlNoSupport:"Браузер не поддерживает офлайн-хранение.", bGeoCenter:"Центрировать", bGeo:"Где я", bGeoOff:"Скрыть", bGeoWait:"Определяю…",
       geoNear:"Ближайшая сцена", geoDenied:"Местоположение недоступно \u2014 разреши доступ к геоданным в браузере.", geoNoSupport:"Браузер не поддерживает геолокацию.",
       tag:"Акерсэльва, Фрюшья–Ватерланн, 8 км",
-      listTitle:"Главные сцены", listNote:"С севера на юг",
+      listTitle:"Сцены и выступления", listNote:"С севера на юг",
       bDark:"Тёмная", bLight:"Светлая", kStop:"Ближайшая остановка", kMap:"Маршрут",
       startLbl:"Начало: Фрюшья", endLbl:"Конец: Ватерланн",
       disc:"Программа взята с сайта организаторов. Остановки — ближайшие по прямой, а не официальная транспортная информация. Организаторы советуют ехать на общественном транспорте, начать с одной из главных сцен и идти вниз по течению.",
-      src:'Источник: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a>. Карта и русло реки: OpenStreetMap.' }
+      src:'\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a: <a href="https://www.elvelangs.no/" target="_blank" rel="noopener">elvelangs.no</a> \u2014 \u0441\u043c. \u0442\u0430\u043a\u0436\u0435 <a href="https://www.google.com/maps/d/viewer?mid=1n26mjC3o-D-yEVIv_39091km596kPI8" target="_blank" rel="noopener">\u043a\u0430\u0440\u0442\u0443 \u043e\u0440\u0433\u0430\u043d\u0438\u0437\u0430\u0442\u043e\u0440\u043e\u0432 \u0441\u043e \u0432\u0441\u0435\u043c\u0438 146 \u0442\u043e\u0447\u043a\u0430\u043c\u0438</a>. \u041a\u0430\u0440\u0442\u0430 \u0438 \u0440\u0443\u0441\u043b\u043e \u0440\u0435\u043a\u0438: OpenStreetMap.' }
   };
 
   var lang = "no", base = "dark", active = null;
