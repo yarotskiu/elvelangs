@@ -81,117 +81,119 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-var APTS = [{"row": 2, "addr": "Refstadveien 65", "area": "Bjerke", "lat": 59.9406972, "lng": 10.8202979, "pris": 5450000, "fg": 0, "omk": 137340, "felles": 2100, "m2": 68, "parking": "да", "url": "https://hjem.no/property/000397/6a12da0f366c4668eccbdd0b", "img": "https://image.hjem.no/property-resized/85A163DBA9CB6EE1438834D097018C64F109AF8AC0C386D728F4F46478BA1DCF/2026_08_10__08_20_58/large/7AF274853354E76F495A71DB98BEDD2BFCD1FB356956EFC26F801540DCFD133C.jpeg"}, {"row": 3, "addr": "Konows gate 39", "area": "Ekebergskrenten", "lat": 59.9024456, "lng": 10.7768954, "pris": 5690000, "fg": 122828, "omk": 147500, "felles": 6500, "m2": 67, "parking": "да", "url": "https://hjem.no/property/000308/6a144143fcd5bd114d8ff9d1", "img": "https://image.hjem.no/property-resized/EA10D84A22A7E35668B7A7FAD6849C2272C855D59445F87E3D3AC44C534C868E/2026_09_22__08_36_55/large/AC23BF7F77D4E61DADE50C1D1D38CB86905A94850F6EB9C2971F2E3E4866C456.jpeg"}, {"row": 4, "addr": "Østdalsveien 8", "area": "Abildsø", "lat": 59.8798714, "lng": 10.8214217, "pris": 4400000, "fg": 121520, "omk": 114370, "felles": 5250, "m2": 66, "parking": "да", "url": "https://hjem.no/property/006647/6a36c406e5a482677467cc08", "img": "https://image.hjem.no/property-resized/3D6E3795EC8D22ADA7F914B57974FD3780E7059BF80E9A4D81EDD32510461E8E/2026_08_30__09_46_15/large/3080CB0B6A9CE7EA555574C92FE620D72DFC58EB87962258D5AD220355797E1A.jpeg"}, {"row": 5, "addr": "Lindbäckveien 43A", "area": "Nordstrand", "lat": 59.865998, "lng": 10.7984733, "pris": 5000000, "fg": 117371, "omk": 129270, "felles": 5500, "m2": 58, "parking": "да", "url": "https://hjem.no/property/000340/6a8fac2627875e4a0fbbfc18", "img": "https://image.hjem.no/property-resized/85D8DD7B89D727BA47B8A09027A73C2CAF8610C82F5F99162AE5DCBD0FF3A100/2026_08_26__19_01_56/large/C3E1D9CB9AD89BA18F862C1593789940E603AE731D21449B2B36613381943656.jpeg"}, {"row": 6, "addr": "Jens Bjelkes gate 82C", "area": "Tøyen", "lat": 59.9125226, "lng": 10.77466, "pris": 4850000, "fg": 0, "omk": 122340, "felles": 5600, "m2": 57, "parking": "да", "url": "https://hjem.no/property/006727/6a5cae8cf02b627dd38ae422", "img": "https://image.hjem.no/property-resized/47BB56E0A2DF1B9FFBBD6EC9C21E3B0F2E96C371E6F3C26C4FEE67E804CFCAB7/2026_09_22__19_34_58/large/9BE10B5C7EBAE5B945B2335ABDFB686A8380E1653D2D33381D8F41B23001FA9B.jpeg"}, {"row": 7, "addr": "Åslandhellinga 223", "area": "Bjørndal", "lat": 59.8233835, "lng": 10.8426792, "pris": 4490000, "fg": 26938, "omk": 113990, "felles": 5300, "m2": 90, "parking": "да", "url": "https://www.nordvikbolig.no/boliger/e68bf903-63cd-4ba3-ac77-485e7f1cbc9b", "img": "https://s3-eu-west-1.amazonaws.com/nordvik-vitec-images/estates/E68BF903-63CD-4BA3-AC77-485E7F1CBC9B/7808250866287-large.jpg"}, {"row": 8, "addr": "Langbølgen 50", "area": "", "lat": 59.863233, "lng": 10.8166755, "pris": 5200000, "fg": 87000, "omk": 9496, "felles": 5400, "m2": 75, "parking": "нет (аренда)", "url": "https://www.nordvikbolig.no/boliger/0acdbde1-7308-4344-a4b3-c7b27d5acab6", "img": "https://s3-eu-west-1.amazonaws.com/nordvik-vitec-images/estates/0ACDBDE1-7308-4344-A4B3-C7B27D5ACAB6/10007273859449-large.jpg"}, {"row": 9, "addr": "Libakkveien 25B", "area": "", "lat": 59.8888524, "lng": 10.8048672, "pris": 5150000, "fg": 215557, "omk": 129840, "felles": 5400, "m2": 67, "parking": "?", "url": "https://www.nordvikbolig.no/boliger/99df4d72-133a-4c08-82aa-c076849d4d9c", "img": "https://s3-eu-west-1.amazonaws.com/nordvik-vitec-images/estates/99DF4D72-133A-4C08-82AA-C076849D4D9C/24300924972685-large.jpg"}, {"row": 10, "addr": "Pionerstien 8", "area": "Ellingsrud", "lat": 59.9354003, "lng": 10.9135588, "pris": 4900000, "fg": 559743, "omk": 9496, "felles": 7300, "m2": 84, "parking": "да", "url": "https://www.krogsveen.no/kjope/boliger-til-salgs/A500AF0B-1898-4487-B464-BFF47470A3F7", "img": "https://cdn.sanity.io/images/u9ed36i9/production/16af1eb5cc9567b191833c4fb008bdfb7b825b10-1536x1024.jpg?w=640"}, {"row": 11, "addr": "Lindebergåsen 36A", "area": "Lindeberg", "lat": 59.928806, "lng": 10.8847865, "pris": 4500000, "fg": 374275, "omk": 17600, "felles": 7000, "m2": 84, "parking": "нет (аренда)", "url": "https://www.krogsveen.no/kjope/boliger-til-salgs/EC10AC16-947B-4F72-9A57-959508002AEF", "img": "https://cdn.sanity.io/images/u9ed36i9/production/3a54ad1ce3b456d689fbefee759a72b7cc1f39fe-1536x1024.jpg?w=640"}, {"row": 12, "addr": "Lutvannsveien 31", "area": "", "lat": 59.9259108, "lng": 10.871603, "pris": 4300000, "fg": 244484, "omk": 114690, "felles": 6150, "m2": 76, "parking": "нет (аренда)", "url": "https://www.krogsveen.no/kjope/boliger-til-salgs/AAD2BAC3-EF10-43EC-A773-36F25E9ABCCF", "img": "https://cdn.sanity.io/images/u9ed36i9/production/3f4214478c319781ed3e6a6496e42d91417804d9-1536x1024.jpg?w=640"}, {"row": 13, "addr": "Freserveien 29", "area": "Kværnerbyen", "lat": 59.9026955, "lng": 10.7873646, "pris": 5490000, "fg": 0, "omk": 20296, "felles": 5900, "m2": 63, "parking": "да", "url": "https://www.krogsveen.no/kjope/boliger-til-salgs/8687C817-6451-47BA-AB27-E8A1CE032235", "img": "https://cdn.sanity.io/images/u9ed36i9/production/93d54a66e73f2a07b944b91665c256ba4256ec2a-1536x1024.jpg?w=640"}];
-var WORK = [{"short": "Bjerke", "name": "Bjerke", "addr": "Trondheimsveien 273", "lat": 59.9412474, "lng": 10.8109703}, {"short": "Construction City", "name": "Construction City, Økern", "addr": "Standardveien 1", "lat": 59.9241448, "lng": 10.8100924}];
-var METRO = [{"r":"1","c":"#0073db","p":["wtamJmjd`AJvEu@bMYxUgBlM]pRkB|LuG`VBbDnApIq@pKZjFx@jBtA\\x@g@nCwEbAUx@d@l@vAXbCk@fKl@`FfArA`FnDvEjBjFDfLaC`F{BxHsFvHkLdH_HlAcCj@iEV_U\\}Br@{AxAk@hDhAnDk@lG~@tKsI~CePnFqPJ}C_@cFTwCbEoGf@_BNcGsBsKuCiKyEsKqBiNsCuGU}Er@iII_Eu@{CoCwDm@gDR{FpEqIhBoPbAeD~AmA`KcBpAFhEtAzAu@n@cBR}CmAcL@}Fn@eDl@m@r@ItAjAxDfHrCvSlCvNbB~AtBi@xHiIx@_C`@aNdCuK~@cQpFuTNyCOsJjAmDp@[p@FnBbBlF|O|G|JpCrCbDdBfDn@nDIxCgAnCeCpLwP|FgExEk@tCaC~HkQ`KgQvLaYjWse@zAuAhd@cXpEgEjD{F`A{DtDoX|Bcm@zD{Xh@e]{B}PSmH^qYtBiTHoDMmD{@sFiAmCuCiDqAwCgD_SuLcV}@oG@yHr@mFnAcDrA}A|DuBfBuClGcXh@sJy@kO?aKz@{SdCqT|@wE`B}DbBwBhFkDvA}Cn@wGj@w_@`@yFtA{EzE{G|ByInAgCdC}BdC}@jDb@fDvApIjHdPbVzHbRdChIxAnI|C~]~@xDdBtClBhAbBJxLqDpIOtEr@xJjE`BTtAYnA_AfG}HtEeIlBgB`M}Cbr@kc@~MgDnGcEnAyBfAeFd@u\\l@gM"]},{"r":"2","c":"#ec700c","p":["y{ylJqhw_A]tK","y{ylJqhw_AL_U_@cEy@yC_BcCgIsEgGyJsOqMmCmDgCcHoLke@iHsNo@iEIqFh@uEpAuEbFgHtLcXr@eDpB{Rv@{NFiKgDceAVgLx@wI~CyMfHgS`CyEzDyDnKmDzBoCvAmGn@yMf@aD`GsLj@qBhO}bAlCo]xFwa@HqE{@}Ub@yE|AeF","ahtlJuk}`A`CiCpAaFz@ge@d@aGzA_FdDgEnAsC~@}ETmF]aJsAwH{BgFcF}FcBoGwAy\\h@oR}@iIcBkEgc@gv@kIeW{ByEcCkDaHeGaOcQ{DqGyDyImE_MiAqF{Dkk@uAcKaCwK}m@m_ByC{FaPqR_IgV_AgEe@mKRkFp@uEtb@y{A"]},{"r":"3","c":"#a85fa5","p":["i`ulJ_~a_A|DaIhG_SnByJ|DoZ|AyGfBcE~AqBvAw@tEw@zCeDlAiD`AcFh@gKo@iKqGeZ_D}SkBkRkAsT{A{J}Kgg@iKk`@wKg]y@kFGuEV{DzDcNh@eImAoZwDaVs@cSjDq\\zEaTVaFMgF{AoHyFsJkBoEsRa{@eAmU\\w^iBiQqAoD}CeD}FkJwRmd@iAyE[qGl@aNU{QfCwVFiGi@}EiEeRKwEf@kP[{FkAqEiDqGeAoFm@q`@s@qHeDaKgOcVsBqNe@oPy@uFgLwWuDsLeOmRkA_HVgH","metlJklbaAKiHb@uFzA_FfCaC|^wFbKu@|DBjNnAvCIzIuBdLqGfD_GzB}Gh@sEV_NrAuGnG_NhFyH~A_BvB_@`Ct@|IpHhB|BxAzElDrXvAlDtBhBfFfAnFH~Es@pHqCpBMnKdB`LKxNv@~QdGxMjBvF?|Q_CdDVrCnAnBbBrEdIvBvHrJlg@hBtErBtCzAfAvCr@|Da@hRqO"]},{"r":"3","c":"#a85fa5","p":["kaulJaaq`AgAvGf@fFz@jAx@PbAc@t@cBxAcP\\uSr@qH","slhlJsabaAg@p@","_lhlJebbaASP","efhlJkgbaAyDdD"]},{"r":"4","c":"#004a98","p":["ul`mJauuaApPUjEr@|^bNtBvBnBbFjD~[VvJo@nm@yF`kAKjJd@pJtHbx@Fzp@x@jJxBbGjFvFtA|B~GnSzC~GlC`DxRjN~A~BtBpIdBb`@xAtHzBxCdGnApCbDvIr[xGlJbGzNvKv\\fGxWrCdHfDxF`EbFpQxNtC`HpDpO|Hti@lBvFxEbItBfHjAlMrDlp@h@pDtCzJrHpNnAzFRhFIzDg@~DuA~DkCdCgJvA_CtAcBjDmI|Z{AlBiC~AeF`HwGjHoElCcx@nXsI`EgAnAyAbEeAlFeIdz@aHjiCFtIlArLrBlH`FlKxOr`@xFnV~Ct]~D~NtCtEtHjGpL`R~AnDjCbK|AlClD`D`C|@lFVpCc@"]},{"r":"5","c":"#32aa35","p":["uk_mJmmo`AvYqFzBiAnBsBdBiE~Fi[nFyJbAwCbBwRrAuFpGuJrCyCvOyGzARhA|@rBvF\\|EVb[|@`ZvCbO`G`M","ijulJuxw`AmEwNcB{BoAg@yg@rBeD]aFoAmC{CqDcO_BkEuCoEeD{ByCm@mDTaD`BaDbD","mkwlJkmx`AwBiAaAmAaB}Eo@uHZ{IhAcFtAeCnLcI`CqDpAkH@wJgGqe@qAmDcH{LcDwLeEms@mAmMwBoHwE_IoB}F{Hmi@iBaJ_FuMqQwNiImLoDqIkG_XuKs\\qGyOgG_J}Ig[uCiDcGkAwBuCyAoHeBi`@uBqIeBeCuRiNoCcDuC{GeHuSeI{JyBsGo@_IIaq@uHgx@c@mJJgJvFakAp@il@YcLiDe\\sAwDwCgD}^cNmEs@qPR"]},{"r":"5","c":"#32aa35","p":["kowlJiv|`AbIxOz@rChFna@LjGm@~GwAjEkBtBkKbHwAzB{@jCs@|FEzFZpEfAvErAdClB|A`KzBpc@qBxCp@hBbCdGpOzGpItD~StAvCvDdFlA~EZbJ}BtV_@zYRpHzBvPe@x[Y~DcD`T}Bbm@eFx\\uCvFeDnD_e@jXuCfCkXpg@cG~NgSd_@oEzKmAnAkA^oHSuCkAyD{D{GcSoLaRsIoHmDsGeDmNqBiWiB{KuFiSoV{k@yAsHs@yN~GmgCxFyr@pA{KjA_GtAqD`A}@zFcCh[{LdOaEzM}EpDaChN}NfEiB|DNfBz@vBxBlC~FlC|KtBnE","kw{lJg|o`AgHkQwB_K{@wYYk\\]_EwBaGyAeAoAMkKbEaDfB}BfCiGdJ}AtFgBpSaArCkFlJyFpZoBjFmBrBeB~@{RbE"]}];
-var STATIONS = "Frognerseteren|59.97912|10.67663|1;Voksenkollen|59.98008|10.6653|1;Lillevann|59.98071|10.65258|1;Skogen|59.97505|10.6475|1;Voksenlia|59.9669|10.65483|1;Holmenkollen|59.9603|10.66271|1;Besserud|59.95768|10.67337|1;Midtstuen|59.96131|10.68308|1;Skådalen|59.96171|10.69084|1;Vettakollen|59.96015|10.69551|1;Gråkammen|59.95491|10.70139|1;Slemdal|59.9509|10.69436|1;Ris|59.94817|10.70416|1;Gaustad|59.9461|10.71036|1;Vinderen|59.9428|10.70499|1;Steinerud|59.93898|10.70439|1;Frøen|59.93448|10.70894|1;Majorstuen|59.93009|10.71472|12345;Nationaltheatret|59.91555|10.7319|12345;Stortinget|59.91343|10.7432|12345;Jernbanetorget|59.91219|10.75169|12345;Grønland|59.91277|10.76014|12345;Tøyen|59.9156|10.77587|12345;Ensjø|59.91376|10.78769|1234;Helsfyr|59.91272|10.80099|1234;Brynseng|59.90917|10.81191|1234;Høyenhall|59.9059|10.81976|14;Manglerud|59.89801|10.81273|14;Ryen|59.89569|10.80472|14;Brattlikollen|59.88741|10.80104|14;Karlsrud|59.88071|10.80523|14;Lambertseter|59.87336|10.81033|14;Munkelia|59.86896|10.81257|14;Bergkrystallen|59.86714|10.82094|14;Gulleråsen|59.95598|10.69607|1;Østerås|59.93943|10.60877|2;Lijordet|59.94084|10.6165|2;Eiksmarka|59.94667|10.6225|2;Ekraveien|59.95061|10.63652|2;Røa|59.94671|10.64423|2;Holmen|59.94588|10.66767|2;Makrellbekken|59.94186|10.67376|2;Smestad|59.93731|10.68363|23;Borgen|59.9346|10.69571|23;Hellerud|59.91005|10.82985|23;Tveita|59.91402|10.84228|2;Haugerud|59.92211|10.85455|2;Trosterud|59.92716|10.86524|2;Lindeberg|59.93314|10.88273|2;Furuset|59.94105|10.89643|2;Ellingsrudåsen|59.93673|10.91523|2;Kolsås|59.91403|10.50163|3;Hauger|59.91115|10.50978|3;Gjettum|59.90851|10.53067|3;Avløs|59.91308|10.54833|3;Haslum|59.91514|10.5653|3;Gjønnes|59.91505|10.58006|3;Bekkestua|59.91717|10.58984|3;Ringstabekk|59.92011|10.60438|3;Jar|59.92576|10.61834|3;Bjørnsletta|59.92651|10.63449|3;Åsjordet|59.92884|10.64832|3;Ullernåsen|59.93148|10.65601|3;Montebello|59.93483|10.66644|3;Godlia|59.9072|10.83587|3;Skøyenåsen|59.89924|10.83665|3;Oppsal|59.89298|10.83981|3;Ulsrud|59.88957|10.84941|3;Bøler|59.88429|10.84553|3;Bogerud|59.87622|10.84208|3;Skullerud|59.8668|10.84012|3;Mortensrud|59.84928|10.82967|3;Vestli|59.97275|10.92961|45;Stovner|59.96216|10.92281|45;Rommen|59.96209|10.90962|45;Romsås|59.96255|10.89269|45;Grorud|59.96144|10.8807|45;Ammerud|59.95827|10.87191|45;Kalbakken|59.95478|10.86692|45;Rødtvet|59.95141|10.85941|45;Veitvet|59.94454|10.84691|45;Linderud|59.94101|10.83849|45;Vollebekk|59.93588|10.83106|45;Risløkka|59.93252|10.82311|45;Økern|59.92828|10.80627|45;Løren|59.92989|10.79039|4;Sinsen|59.93739|10.78183|45;Storo|59.94464|10.77862|45;Nydalen|59.94937|10.76627|45;Ullevål stadion|59.94682|10.73215|45;Forskningsparken|59.94372|10.72084|45;Blindern|59.94015|10.71604|45;Berg|59.95122|10.74421|5;Carl Berners plass|59.92582|10.77967|5;Hasle|59.92434|10.79473|5";
 
-var PIN = "#C2410C";
+Promise.all([fetch("data/apartments.json",{cache:"no-cache"}).then(function(r){return r.json();}),
+             fetch("data/metro.json").then(function(r){return r.json();})])
+.then(function(res){
+  var APTS = res[0].apartments, WORK = res[0].places, METRO = res[1].lines, STATIONS = res[1].stations;
+  var PIN = "#C2410C";
 
-function fmt(n){ return Math.round(n).toLocaleString("nb-NO").replace(/ /g," "); }
-function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
-function decode(str){
-  var i=0, lat=0, lng=0, out=[];
-  while(i<str.length){
-    var b, sh=0, r=0;
-    do{ b=str.charCodeAt(i++)-63; r|=(b&31)<<sh; sh+=5; }while(b>=32);
-    lat += (r&1) ? ~(r>>1) : (r>>1);
-    sh=0; r=0;
-    do{ b=str.charCodeAt(i++)-63; r|=(b&31)<<sh; sh+=5; }while(b>=32);
-    lng += (r&1) ? ~(r>>1) : (r>>1);
-    out.push([lat/1e5, lng/1e5]);
+  function fmt(n){ return Math.round(n).toLocaleString("nb-NO").replace(/ /g," "); }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function decode(str){
+    var i=0, lat=0, lng=0, out=[];
+    while(i<str.length){
+      var b, sh=0, r=0;
+      do{ b=str.charCodeAt(i++)-63; r|=(b&31)<<sh; sh+=5; }while(b>=32);
+      lat += (r&1) ? ~(r>>1) : (r>>1);
+      sh=0; r=0;
+      do{ b=str.charCodeAt(i++)-63; r|=(b&31)<<sh; sh+=5; }while(b>=32);
+      lng += (r&1) ? ~(r>>1) : (r>>1);
+      out.push([lat/1e5, lng/1e5]);
+    }
+    return out;
   }
-  return out;
-}
 
-APTS.forEach(function(a){ a.total = a.pris + a.fg + a.omk; });
+  APTS.forEach(function(a){ a.total = a.pris + a.fg + a.omk; });
 
-var map = L.map("map", {zoomControl:true, preferCanvas:false}).setView([59.905, 10.82], 12);
-L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-  maxZoom: 19, subdomains: "abcd",
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-}).addTo(map);
+  var map = L.map("map", {zoomControl:true, preferCanvas:false}).setView([59.905, 10.82], 12);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    maxZoom: 19, subdomains: "abcd",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
 
-/* ---- metro ---- */
-map.createPane("metro"); map.getPane("metro").style.zIndex = 420;
-var metroLayer = L.layerGroup().addTo(map);
-var lineColors = {};
-METRO.forEach(function(l){
-  lineColors[l.r] = l.c;
-  l.p.forEach(function(enc){
-    var pts = decode(enc);
-    L.polyline(pts, {pane:"metro", color:"#fff", weight:8, opacity:.9, interactive:false}).addTo(metroLayer);
-    L.polyline(pts, {pane:"metro", color:l.c, weight:4.5, opacity:.95, interactive:false}).addTo(metroLayer);
+  /* ---- metro ---- */
+  map.createPane("metro"); map.getPane("metro").style.zIndex = 420;
+  var metroLayer = L.layerGroup().addTo(map);
+  var lineColors = {};
+  METRO.forEach(function(l){
+    lineColors[l.r] = l.c;
+    l.p.forEach(function(enc){
+      var pts = decode(enc);
+      L.polyline(pts, {pane:"metro", color:"#fff", weight:8, opacity:.9, interactive:false}).addTo(metroLayer);
+      L.polyline(pts, {pane:"metro", color:l.c, weight:4.5, opacity:.95, interactive:false}).addTo(metroLayer);
+    });
   });
-});
-var stationLayer = L.layerGroup().addTo(map);
-STATIONS.split(";").forEach(function(s){
-  var f = s.split("|"); var lines = f[3].split("");
-  var chips = lines.map(function(n){ return '<span class="badge" style="background:'+(lineColors[n]||"#555")+'">'+n+'</span>'; }).join(" ");
-  L.circleMarker([+f[1], +f[2]], {pane:"metro", radius:4, color:"#1B1A17", weight:1.5, fillColor:"#fff", fillOpacity:1})
-    .bindTooltip('<div class="stn"><b>'+esc(f[0])+'</b> '+chips+'</div>', {direction:"top", offset:[0,-4]})
-    .addTo(stationLayer);
-});
+  var stationLayer = L.layerGroup().addTo(map);
+  STATIONS.forEach(function(f){
+    var lines = f[3].split("");
+    var chips = lines.map(function(n){ return '<span class="badge" style="background:'+(lineColors[n]||"#555")+'">'+n+'</span>'; }).join(" ");
+    L.circleMarker([+f[1], +f[2]], {pane:"metro", radius:4, color:"#1B1A17", weight:1.5, fillColor:"#fff", fillOpacity:1})
+      .bindTooltip('<div class="stn"><b>'+esc(f[0])+'</b> '+chips+'</div>', {direction:"top", offset:[0,-4]})
+      .addTo(stationLayer);
+  });
 
-/* ---- work ---- */
-WORK.forEach(function(w){
-  L.marker([w.lat, w.lng], {icon: L.divIcon({className:"", html:'<span class="wk"><span>'+esc(w.short)+'</span></span>', iconSize:[14,14], iconAnchor:[7,7]}), zIndexOffset:500})
-    .bindTooltip(esc(w.name)+'<br>'+esc(w.addr), {direction:"left", offset:[-8,0]}).addTo(map);
-});
+  /* ---- work ---- */
+  WORK.forEach(function(w){
+    L.marker([w.lat, w.lng], {icon: L.divIcon({className:"", html:'<span class="wk"><span>'+esc(w.short)+'</span></span>', iconSize:[14,14], iconAnchor:[7,7]}), zIndexOffset:500})
+      .bindTooltip(esc(w.name)+'<br>'+esc(w.addr), {direction:"left", offset:[-8,0]}).addTo(map);
+  });
 
-/* ---- apartments ---- */
-var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
-function card(a){
-  return '<img class="c-img" loading="lazy" referrerpolicy="no-referrer" src="'+esc(a.img)+'" alt="" onerror="this.style.display=\'none\'">'
-    + '<div class="c-b"><p class="c-t">'+a.row+'. '+esc(a.addr)+'</p>'
-    + '<p class="c-area">'+esc(a.area||"&nbsp;")+(a.area?" · ":"")+a.m2+' м² · парковка: '+esc(a.parking)+'</p>'
-    + '<table class="c-tbl">'
-    + '<tr><td>Цена (prisantydning)</td><td>'+fmt(a.pris)+'</td></tr>'
-    + '<tr><td>Fellesgjeld</td><td>'+fmt(a.fg)+'</td></tr>'
-    + '<tr><td>Omkostninger</td><td>'+fmt(a.omk)+'</td></tr>'
-    + '<tr><td>Felleskost / мес</td><td>'+fmt(a.felles)+'</td></tr>'
-    + '<tr class="hl"><td>Totalpris</td><td>'+fmt(a.total)+'</td></tr>'
-    + '</table>'
-    + '<a class="c-link" href="'+esc(a.url)+'" target="_blank" rel="noopener">Открыть объявление →</a>'
-    + '</div>';
-}
-var markers = {}; var hc = document.getElementById("hovercard");
-APTS.forEach(function(a){
-  var icon = L.divIcon({className:"", html:'<div class="pin" style="background:'+PIN+'">'+a.row+'</div>', iconSize:[28,28], iconAnchor:[14,14]});
-  var m = L.marker([a.lat, a.lng], {icon:icon, zIndexOffset:1000, riseOnHover:true}).addTo(map);
-  m.bindPopup(card(a), {className:"card", maxWidth:280, minWidth:280, autoPanPadding:[20,20]});
-  if(canHover){
-    m.on("mouseover", function(){ if(m.isPopupOpen()) return; hc.innerHTML = card(a); hc.style.display = "block"; });
-    m.on("mouseout click", function(){ hc.style.display = "none"; });
+  /* ---- apartments ---- */
+  var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+  function card(a){
+    return '<img class="c-img" loading="lazy" referrerpolicy="no-referrer" src="'+esc(a.img)+'" alt="" onerror="this.style.display=\'none\'">'
+      + '<div class="c-b"><p class="c-t">'+a.row+'. '+esc(a.addr)+'</p>'
+      + '<p class="c-area">'+esc(a.area||"&nbsp;")+(a.area?" · ":"")+a.m2+' м² · парковка: '+esc(a.parking)+'</p>'
+      + '<table class="c-tbl">'
+      + '<tr><td>Цена (prisantydning)</td><td>'+fmt(a.pris)+'</td></tr>'
+      + '<tr><td>Fellesgjeld</td><td>'+fmt(a.fg)+'</td></tr>'
+      + '<tr><td>Omkostninger</td><td>'+fmt(a.omk)+'</td></tr>'
+      + '<tr><td>Felleskost / мес</td><td>'+fmt(a.felles)+'</td></tr>'
+      + '<tr class="hl"><td>Totalpris</td><td>'+fmt(a.total)+'</td></tr>'
+      + '</table>'
+      + '<a class="c-link" href="'+esc(a.url)+'" target="_blank" rel="noopener">Открыть объявление →</a>'
+      + '</div>';
   }
-  markers[a.row] = m;
-});
+  var markers = {}; var hc = document.getElementById("hovercard");
+  APTS.forEach(function(a){
+    var icon = L.divIcon({className:"", html:'<div class="pin" style="background:'+PIN+'">'+a.row+'</div>', iconSize:[28,28], iconAnchor:[14,14]});
+    var m = L.marker([a.lat, a.lng], {icon:icon, zIndexOffset:1000, riseOnHover:true}).addTo(map);
+    m.bindPopup(card(a), {className:"card", maxWidth:280, minWidth:280, autoPanPadding:[20,20]});
+    if(canHover){
+      m.on("mouseover", function(){ if(m.isPopupOpen()) return; hc.innerHTML = card(a); hc.style.display = "block"; });
+      m.on("mouseout click", function(){ hc.style.display = "none"; });
+    }
+    markers[a.row] = m;
+  });
 
-/* ---- list ---- */
-var list = document.getElementById("list");
-APTS.slice().sort(function(x,y){ return x.total - y.total; }).forEach(function(a){
-  var d = document.createElement("div"); d.className = "item";
-  d.innerHTML = '<div class="n" style="background:'+PIN+'">'+a.row+'</div>'
-    + '<div class="t"><div class="a">'+esc(a.addr)+'</div><div class="s">'+fmt(a.total)+' · '+a.m2+' м² · felleskost '+fmt(a.felles)+'</div></div>';
-  d.onclick = function(){ map.flyTo([a.lat, a.lng], 15, {duration:.6}); setTimeout(function(){ markers[a.row].openPopup(); }, 650); };
-  list.appendChild(d);
-});
+  /* ---- list ---- */
+  var list = document.getElementById("list");
+  APTS.slice().sort(function(x,y){ return x.total - y.total; }).forEach(function(a){
+    var d = document.createElement("div"); d.className = "item";
+    d.innerHTML = '<div class="n" style="background:'+PIN+'">'+a.row+'</div>'
+      + '<div class="t"><div class="a">'+esc(a.addr)+'</div><div class="s">'+fmt(a.total)+' · '+a.m2+' м² · felleskost '+fmt(a.felles)+'</div></div>';
+    d.onclick = function(){ map.flyTo([a.lat, a.lng], 15, {duration:.6}); setTimeout(function(){ markers[a.row].openPopup(); }, 650); };
+    list.appendChild(d);
+  });
 
-/* ---- legend ---- */
-var lg = document.getElementById("legend");
-lg.innerHTML =
-  '<span>T-bane:</span>'
-+ ["1","2","3","4","5"].map(function(n){ return '<span><span class="ln" style="background:'+(lineColors[n]||"#555")+'"></span>'+n+'</span>'; }).join("")
-+ '<label><input type="checkbox" id="tgl" checked> метро</label>';
-document.getElementById("tgl").onchange = function(e){
-  if(e.target.checked){ metroLayer.addTo(map); stationLayer.addTo(map); } else { map.removeLayer(metroLayer); map.removeLayer(stationLayer); }
-};
+  /* ---- legend ---- */
+  var lg = document.getElementById("legend");
+  lg.innerHTML =
+    '<span>T-bane:</span>'
+  + ["1","2","3","4","5"].map(function(n){ return '<span><span class="ln" style="background:'+(lineColors[n]||"#555")+'"></span>'+n+'</span>'; }).join("")
+  + '<label><input type="checkbox" id="tgl" checked> метро</label>';
+  document.getElementById("tgl").onchange = function(e){
+    if(e.target.checked){ metroLayer.addTo(map); stationLayer.addTo(map); } else { map.removeLayer(metroLayer); map.removeLayer(stationLayer); }
+  };
 
-var b = L.latLngBounds(APTS.map(function(a){ return [a.lat,a.lng]; }).concat(WORK.map(function(w){ return [w.lat,w.lng]; })));
-map.fitBounds(b.pad(0.08));
+  var b = L.latLngBounds(APTS.map(function(a){ return [a.lat,a.lng]; }).concat(WORK.map(function(w){ return [w.lat,w.lng]; })));
+  map.fitBounds(b.pad(0.08));
 
-/* the previous app on this address registered an offline service worker; remove it */
-if("serviceWorker" in navigator){ navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }).catch(function(){}); }
+  /* the previous app on this address registered an offline service worker; remove it */
+  if("serviceWorker" in navigator){ navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }).catch(function(){}); }
+})
+.catch(function(e){ document.getElementById("list").textContent = "Не удалось загрузить данные: " + e.message; });
 </script>
 </body>
 </html>
