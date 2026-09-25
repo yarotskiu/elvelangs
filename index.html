@@ -107,10 +107,9 @@ Promise.all([fetch("data/apartments.json",{cache:"no-cache"}).then(function(r){r
   APTS.forEach(function(a){ a.total = a.pris + a.fg + a.omk; });
 
   var map = L.map("map", {zoomControl:true, preferCanvas:false}).setView([59.905, 10.82], 12);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    maxZoom: 19, subdomains: "abcd",
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  }).addTo(map);
+  var esriAttr = 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, maxNativeZoom:16, attribution:esriAttr}).addTo(map);
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, maxNativeZoom:16}).addTo(map);
 
   /* ---- metro ---- */
   map.createPane("metro"); map.getPane("metro").style.zIndex = 420;

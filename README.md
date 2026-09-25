@@ -5,7 +5,7 @@ Live at https://yarotskiu.github.io/elvelangs/ (GitHub Pages, `main` branch, rep
 
 ## Files
 
-- `index.html` — the page (Leaflet 1.9.4 from cdnjs, CARTO light basemap). Loads the two JSON files below.
+- `index.html` — the page (Leaflet 1.9.4 from cdnjs, Esri World Light Gray basemap — same tile service the old Elvelangs map used; CARTO now needs an API key). Loads the two JSON files below.
 - `data/apartments.json` — `apartments[]` (one object per listing) and `places[]` (reference points: Bjerke, Construction City).
 - `data/metro.json` — T-bane lines as Google-encoded polylines (precision 1e-5) and stations `[name, lat, lng, lines]`.
   Built from OpenStreetMap route relations 2890636, 6099199, 2636244, 2635251, 6104597, 2826133, 2640903, 453461
