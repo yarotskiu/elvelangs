@@ -44,24 +44,37 @@
       box-shadow:0 1px 4px rgba(0,0,0,.35)}
   .wk span{position:absolute;right:18px;top:-4px;background:var(--work);color:#fff;font:600 11.5px/1 var(--fb);padding:4px 6px;
       border-radius:3px;white-space:nowrap}
-  #hovercard{position:absolute;top:10px;left:56px;z-index:800;width:280px;background:#fff;border-radius:8px;overflow:hidden;
-      box-shadow:0 6px 24px rgba(0,0,0,.22);display:none;pointer-events:none}
   .mapwrap{position:relative;flex:1 1 auto;min-width:0;display:flex}
   .leaflet-div-icon{background:none;border:0}
 
-  /* hover card */
-  .leaflet-popup.card .leaflet-popup-content-wrapper{padding:0;border-radius:8px;overflow:hidden;border:0;
-      box-shadow:0 6px 24px rgba(0,0,0,.22)}
-  .leaflet-popup.card .leaflet-popup-content{margin:0;width:280px!important}
-  .c-img{width:100%;height:150px;object-fit:cover;display:block;background:#DDD8CE}
-  .c-b{padding:10px 12px 12px}
-  .c-t{font-weight:650;font-size:14.5px;margin:0}
-  .c-area{color:var(--muted);font-size:12px;margin:0 0 6px}
-  .c-tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
-  .c-tbl td{padding:2px 0}
-  .c-tbl td:last-child{text-align:right;font-weight:600}
-  .c-tbl tr.hl td{border-top:1px solid var(--rule);padding-top:5px}
-  .c-tbl tr.hl td:last-child{font-size:14px}
+  /* apartment card */
+  #card{position:absolute;z-index:800;width:min(460px, calc(100% - 24px));background:#fff;border-radius:10px;overflow:hidden;
+      box-shadow:0 10px 32px rgba(0,0,0,.28);display:none}
+  #card.on{display:block}
+  .c-ph{position:relative;height:300px;background:#1B1A17;user-select:none}
+  .c-ph img{width:100%;height:100%;object-fit:contain;display:block}
+  .c-nav{position:absolute;top:0;bottom:0;width:22%;border:0;background:transparent;cursor:pointer;color:#fff;
+      font:400 34px/1 var(--fb);display:flex;align-items:center;padding:0 12px;opacity:.75}
+  .c-nav:hover{opacity:1;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,0))}
+  .c-nav.nx{right:0;justify-content:flex-end}
+  .c-nav.nx:hover{background:linear-gradient(270deg,rgba(0,0,0,.35),rgba(0,0,0,0))}
+  .c-nav:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+  .c-cnt{position:absolute;right:10px;bottom:8px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:2px 7px;border-radius:10px;
+      font-variant-numeric:tabular-nums}
+  .c-x{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;
+      font:400 18px/28px var(--fb);cursor:pointer;display:none}
+  #card.pinned .c-x{display:block}
+  .c-b{padding:12px 14px 14px}
+  .c-t{font-weight:650;font-size:15.5px;margin:0}
+  .c-area{color:var(--muted);font-size:12.5px;margin:2px 0 8px}
+  .c-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:13px;font-variant-numeric:tabular-nums}
+  .c-grid div{display:flex;justify-content:space-between;gap:8px}
+  .c-grid span{color:var(--muted)}
+  .c-grid b{font-weight:600}
+  .c-tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--rule);margin-top:8px;padding-top:8px}
+  .c-tot b{font-size:17px}
+  .c-link{display:inline-block;margin-top:8px;font-size:13px;color:#0B61C8;text-decoration:none;font-weight:600}
+  @media (max-width:760px){ .c-ph{height:220px} }
   .badge{display:inline-block;padding:1px 6px;border-radius:3px;color:#fff;font-size:12px}
   .c-link{display:inline-block;margin-top:8px;font-size:12.5px;color:#0B61C8;text-decoration:none;font-weight:600}
   .stn{font-size:12px}
@@ -75,7 +88,7 @@
     <div class="legend" id="legend"></div>
   </header>
   <div class="main">
-    <div class="mapwrap"><div id="map"></div><div id="hovercard"></div></div>
+    <div class="mapwrap"><div id="map"></div><div id="card" role="dialog" aria-label="Квартира"></div></div>
     <aside><h2>По totalpris</h2><div id="list"></div></aside>
   </div>
 </div>
@@ -140,29 +153,87 @@ Promise.all([fetch("data/apartments.json",{cache:"no-cache"}).then(function(r){r
 
   /* ---- apartments ---- */
   var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
-  function card(a){
-    return '<img class="c-img" loading="lazy" referrerpolicy="no-referrer" src="'+esc(a.img)+'" alt="" onerror="this.style.display=\'none\'">'
+  var cardEl = document.getElementById("card"), wrap = cardEl.parentElement;
+  var cur = null, idx = 0, pinned = false, hideT = null, markers = {};
+
+  function cardHtml(a){
+    var n = a.imgs.length;
+    return '<div class="c-ph">'
+      + '<img id="c-img" alt="" referrerpolicy="no-referrer">'
+      + (n > 1 ? '<button class="c-nav pv" id="c-pv" aria-label="Предыдущее фото">‹</button><button class="c-nav nx" id="c-nx" aria-label="Следующее фото">›</button>' : '')
+      + '<span class="c-cnt" id="c-cnt"></span>'
+      + '<button class="c-x" id="c-x" aria-label="Закрыть">×</button>'
+      + '</div>'
       + '<div class="c-b"><p class="c-t">'+a.row+'. '+esc(a.addr)+'</p>'
-      + '<p class="c-area">'+esc(a.area||"&nbsp;")+(a.area?" · ":"")+a.m2+' м² · парковка: '+esc(a.parking)+'</p>'
-      + '<table class="c-tbl">'
-      + '<tr><td>Цена (prisantydning)</td><td>'+fmt(a.pris)+'</td></tr>'
-      + '<tr><td>Fellesgjeld</td><td>'+fmt(a.fg)+'</td></tr>'
-      + '<tr><td>Omkostninger</td><td>'+fmt(a.omk)+'</td></tr>'
-      + '<tr><td>Felleskost / мес</td><td>'+fmt(a.felles)+'</td></tr>'
-      + '<tr class="hl"><td>Totalpris</td><td>'+fmt(a.total)+'</td></tr>'
-      + '</table>'
+      + '<p class="c-area">'+(a.area ? esc(a.area)+' · ' : '')+a.m2+' м² · парковка: '+esc(a.parking)+'</p>'
+      + '<div class="c-grid">'
+      + '<div><span>Prisantydning</span><b>'+fmt(a.pris)+'</b></div>'
+      + '<div><span>Felleskost/мес</span><b>'+fmt(a.felles)+'</b></div>'
+      + '<div><span>Fellesgjeld</span><b>'+fmt(a.fg)+'</b></div>'
+      + '<div><span>Omkostninger</span><b>'+fmt(a.omk)+'</b></div>'
+      + '</div>'
+      + '<div class="c-tot"><span>Totalpris</span><b>'+fmt(a.total)+'</b></div>'
       + '<a class="c-link" href="'+esc(a.url)+'" target="_blank" rel="noopener">Открыть объявление →</a>'
       + '</div>';
   }
-  var markers = {}; var hc = document.getElementById("hovercard");
+  function showImg(){
+    var n = cur.imgs.length; idx = (idx % n + n) % n;
+    document.getElementById("c-img").src = cur.imgs[idx];
+    document.getElementById("c-cnt").textContent = (idx+1) + " / " + n;
+    [1, -1, 2].forEach(function(d){ var im = new Image(); im.referrerPolicy = "no-referrer"; im.src = cur.imgs[((idx+d)%n+n)%n]; });
+  }
+  function step(d){ if(!cur) return; idx += d; showImg(); }
+  function place(){
+    if(!cur) return;
+    var pt = map.latLngToContainerPoint([cur.lat, cur.lng]);
+    var W = wrap.clientWidth, H = wrap.clientHeight, w = cardEl.offsetWidth, h = cardEl.offsetHeight;
+    var g = 20, m = 8, left, top;
+    var cx = Math.max(m, Math.min(W - w - m, pt.x - w/2)), cy = Math.max(m, Math.min(H - h - m, pt.y - h/2));
+    if(pt.y - g - h >= m){ left = cx; top = pt.y - g - h; }            // above the pin
+    else if(pt.y + g + h <= H - m){ left = cx; top = pt.y + g; }        // below
+    else if(pt.x + g + w <= W - m){ left = pt.x + g; top = cy; }        // to the right
+    else if(pt.x - g - w >= m){ left = pt.x - g - w; top = cy; }        // to the left
+    else { left = cx; top = m; }
+    cardEl.style.left = left + "px"; cardEl.style.top = top + "px";
+  }
+  function openCard(a, pin){
+    clearTimeout(hideT);
+    if(cur !== a){
+      cur = a; idx = 0;
+      cardEl.innerHTML = cardHtml(a);
+      var pv = document.getElementById("c-pv"), nx = document.getElementById("c-nx");
+      if(pv) pv.onclick = function(e){ e.stopPropagation(); step(-1); };
+      if(nx) nx.onclick = function(e){ e.stopPropagation(); step(1); };
+      document.getElementById("c-x").onclick = function(e){ e.stopPropagation(); closeCard(); };
+      showImg();
+    }
+    if(pin) pinned = true;
+    cardEl.classList.add("on"); cardEl.classList.toggle("pinned", pinned);
+    place();
+  }
+  function closeCard(){ clearTimeout(hideT); cur = null; pinned = false; cardEl.classList.remove("on", "pinned"); }
+  function scheduleHide(){ if(pinned) return; clearTimeout(hideT); hideT = setTimeout(closeCard, 350); }
+
+  cardEl.addEventListener("mouseenter", function(){ clearTimeout(hideT); });
+  cardEl.addEventListener("mouseleave", scheduleHide);
+  L.DomEvent.disableClickPropagation(cardEl); L.DomEvent.disableScrollPropagation(cardEl);
+  map.on("move zoom", place);
+  map.on("click", closeCard);
+  document.addEventListener("keydown", function(e){
+    if(!cur) return;
+    if(e.key === "ArrowRight"){ step(1); e.preventDefault(); }
+    else if(e.key === "ArrowLeft"){ step(-1); e.preventDefault(); }
+    else if(e.key === "Escape"){ closeCard(); }
+  });
+
   APTS.forEach(function(a){
     var icon = L.divIcon({className:"", html:'<div class="pin" style="background:'+PIN+'">'+a.row+'</div>', iconSize:[28,28], iconAnchor:[14,14]});
-    var m = L.marker([a.lat, a.lng], {icon:icon, zIndexOffset:1000, riseOnHover:true}).addTo(map);
-    m.bindPopup(card(a), {className:"card", maxWidth:280, minWidth:280, autoPanPadding:[20,20]});
+    var m = L.marker([a.lat, a.lng], {icon:icon, zIndexOffset:1000, riseOnHover:true, keyboard:true, title:a.addr}).addTo(map);
     if(canHover){
-      m.on("mouseover", function(){ if(m.isPopupOpen()) return; hc.innerHTML = card(a); hc.style.display = "block"; });
-      m.on("mouseout click", function(){ hc.style.display = "none"; });
+      m.on("mouseover", function(){ if(pinned && cur !== a) return; openCard(a, false); });
+      m.on("mouseout", scheduleHide);
     }
+    m.on("click", function(){ if(pinned && cur !== a){ pinned = false; } openCard(a, true); });
     markers[a.row] = m;
   });
 
@@ -172,7 +243,7 @@ Promise.all([fetch("data/apartments.json",{cache:"no-cache"}).then(function(r){r
     var d = document.createElement("div"); d.className = "item";
     d.innerHTML = '<div class="n" style="background:'+PIN+'">'+a.row+'</div>'
       + '<div class="t"><div class="a">'+esc(a.addr)+'</div><div class="s">'+fmt(a.total)+' · '+a.m2+' м² · felleskost '+fmt(a.felles)+'</div></div>';
-    d.onclick = function(){ map.flyTo([a.lat, a.lng], 15, {duration:.6}); setTimeout(function(){ markers[a.row].openPopup(); }, 650); };
+    d.onclick = function(){ closeCard(); map.flyTo([a.lat, a.lng], 14, {duration:.6}); map.once("moveend", function(){ openCard(a, true); }); };
     list.appendChild(d);
   });
 

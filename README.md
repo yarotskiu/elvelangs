@@ -19,7 +19,7 @@ https://docs.google.com/spreadsheets/d/18yx2Eu65xw_Br2obkJDMG6qkZgElMfuYNk6qDi0h
 `row` in `apartments.json` is the row number in that sheet, so map numbers match the sheet.
 
 Apartment fields: `row, addr, area, lat, lng, pris (prisantydning), fg (fellesgjeld), omk (omkostninger),
-felles (felleskostnader per month), m2, parking, url (listing), img (listing photo URL)`.
+felles (felleskostnader per month), m2, parking, url (listing), imgs (all listing photo URLs, cover first)`.
 Totalpris is computed in the page as `pris + fg + omk`.
 
 Only numbers that are published in the listings go into this repo — it is public.
@@ -28,6 +28,6 @@ Personal finance figures (own capital, thresholds) stay in the spreadsheet.
 ## Adding an apartment
 
 1. Take prisantydning, fellesgjeld, omkostninger, felleskost, m² from the listing.
-2. Photo: the listing's `og:image` (hjem.no, finn.no, krogsveen.no, nordvikbolig.no all set one).
+2. Photos: all gallery images of the listing, cover (`og:image`) first. hjem.no: open the gallery, then collect `image.hjem.no/property-resized/<hash>/<date>/large/<id>.webp` for the listing's hash. nordvikbolig.no: `d1j4wdkidt72cf.cloudfront.net/estates/<ESTATE>/<n>-large.jpg`. krogsveen.no: the cdn.sanity.io hashes in the page's data script from the og:image onwards, as `...-<WxH>.jpg?w=1200&auto=format`.
 3. Coordinates: search the address on Google Maps; the URL contains `!3d<lat>!4d<lng>`.
 4. Add an object to `data/apartments.json`, commit to `main`, push.
